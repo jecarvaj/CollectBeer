@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CollectBeer</string>
+    <string name="nueva">Agregar cerveza</string>
+    <string name="consultar">Verificar</string>
+    <string name="lista">Mostrar todo</string>
+    <string name="configuracion">Configuración</string>
+</resources>
