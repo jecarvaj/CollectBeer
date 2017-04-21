@@ -46,7 +46,32 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--Nuevo-->
+    <style name="textViewNuevo">
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textColor">#874301</item>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="editTextNuevo">
+        <item name="android:background">@drawable/background_edittext</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textColorHint">@color/hintNuevo</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="RatingBar" >
+        <item name="colorControlNormal">@color/shadow_lighter_color</item>
+        <item name="colorControlActivated">@color/textNuevo</item>
+    </style>
+
+    <style name="boton">
+        <item name="android:background">@drawable/background_edittext</item>
+
+    </style>
 </resources>
