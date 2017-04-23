@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/layouts"
-    tools:context="com.example.jean.collectbeer.ConfigActivity">
+    tools:context="com.example.jean.collectbeer.activity.ConfigActivity">
 
 </android.support.constraint.ConstraintLayout>

@@ -1,13 +1,15 @@
-package com.example.jean.collectbeer;
+package com.example.jean.collectbeer.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class NuevoActivity extends AppCompatActivity {
+import com.example.jean.collectbeer.R;
+
+public class ConsultaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nuevo);
+        setContentView(R.layout.activity_consulta);
     }
 }

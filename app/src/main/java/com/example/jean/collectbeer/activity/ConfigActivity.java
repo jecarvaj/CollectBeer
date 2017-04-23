@@ -1,7 +1,9 @@
-package com.example.jean.collectbeer;
+package com.example.jean.collectbeer.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.jean.collectbeer.R;
 
 public class ConfigActivity extends AppCompatActivity {
 

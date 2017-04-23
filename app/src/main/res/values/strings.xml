@@ -10,13 +10,13 @@
     <string name="marca">Marca</string>
     <string name="marcaEj">Kunstmann</string>
     <string name="nombre">Nombre</string>
-    <string name="nombreEj">Ej: Torobayo</string>
+    <string name="nombreEj">Ej: Kunstmann Torobayo</string>
     <string name="variedad">Variedad</string>
     <string name="variedadEj">Ej: Ale</string>
     <string name="pais">País</string>
     <string name="paisEj">Ej: Chile</string>
     <string name="alcohol">Grado alcohol</string>
-    <string name="alcoholEj">Ej: 7.5°</string>
+    <string name="alcoholEj">Ej: 7.5</string>
     <string name="otro">Otro</string>
     <string name="otroEj">Ej: Botella 500ml. Con tapón</string>
 

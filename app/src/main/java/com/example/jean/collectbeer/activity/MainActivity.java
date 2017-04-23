@@ -1,12 +1,15 @@
-package com.example.jean.collectbeer;
+package com.example.jean.collectbeer.activity;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.example.jean.collectbeer.R;
+import com.example.jean.collectbeer.helper.CervezasDbHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
@@ -24,7 +27,11 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
         consultar.setOnClickListener(this);
         mostrarTodo.setOnClickListener(this);
         configuracion.setOnClickListener(this);
-    }
+
+
+
+
+}
 
     @Override
     public void onClick(View v) {

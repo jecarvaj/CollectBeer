@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/layouts"
-    tools:context="com.example.jean.collectbeer.NuevoActivity">
+    tools:context="com.example.jean.collectbeer.activity.NuevoActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -74,6 +74,7 @@
                     android:layout_centerHorizontal="false"/>
                 <EditText
                     android:id="@+id/etAlcohol"
+                    android:inputType="numberDecimal"
                     android:layout_marginStart="10dp"
                     android:hint="@string/alcoholEj"
                     style="@style/editTextNuevo"
@@ -93,7 +94,10 @@
             android:id="@+id/etOtro"
             android:hint="@string/otroEj"
             style="@style/editTextNuevo"
+            android:maxLines="2"
             android:lines="2"
+            android:inputType="textAutoCorrect"
+
             />
 
 
@@ -109,8 +113,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="1dp"
-            android:numStars="6"
-            android:rating="6"
+            android:numStars="5"
+            android:rating="5"
             android:stepSize="0.5"
             />
 
@@ -122,21 +126,11 @@
         android:layout_height="match_parent"
         >
         <Button
-            android:id="@+id/boton"
+            android:id="@+id/btGuardar"
             style="@style/boton"
+            android:text="Guardar">
 
-            android:layout_width="213dp"
-            android:layout_height="41dp"
-            android:layout_gravity="end"
-            android:background="@drawable/boton"
-            android:drawablePadding="8dp"
-            android:text="Guardar"
-            android:textAllCaps="true"
-            android:textColor="#daae54"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+        </Button>
     </RelativeLayout>
 
 
