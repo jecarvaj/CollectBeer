@@ -60,7 +60,7 @@
         <item name="android:padding">8dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:minLines">1</item>
-        <item name="android:inputType">text</item>
+        <item name="android:inputType">textCapWords</item>
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:textColorHint">@color/hintNuevo</item>
         <item name="android:layout_width">match_parent</item>

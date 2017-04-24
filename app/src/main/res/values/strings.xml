@@ -20,4 +20,6 @@
     <string name="otro">Otro</string>
     <string name="otroEj">Ej: Botella 500ml. Con tapón</string>
 
+    <string name="msgExitoSubirFoto">Foto cargada correctamente</string>
+
 </resources>

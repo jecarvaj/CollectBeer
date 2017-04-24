@@ -1,9 +1,11 @@
-package com.example.jean.collectbeer.helper;
+package com.example.jean.collectbeer.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.example.jean.collectbeer.db.CervezasDbContract;
 
 /**
  * Created by Jean on 22-04-2017.

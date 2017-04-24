@@ -9,8 +9,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/button"
+
+        <Button
+            android:id="@+id/btCamara"
             android:layout_width="70dp"
             android:layout_height="65dp"
             android:background="@drawable/ic_add_a_photo_white_48dp"
@@ -96,7 +97,7 @@
             style="@style/editTextNuevo"
             android:maxLines="2"
             android:lines="2"
-            android:inputType="textAutoCorrect"
+            android:inputType="textCapSentences"
 
             />
 
@@ -125,6 +126,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textViewNuevo"
+            android:gravity="start"
+            android:id="@+id/textViewFoto"/>
+
         <Button
             android:id="@+id/btGuardar"
             style="@style/boton"

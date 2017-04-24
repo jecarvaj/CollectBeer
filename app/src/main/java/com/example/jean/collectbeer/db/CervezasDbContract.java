@@ -1,4 +1,4 @@
-package com.example.jean.collectbeer.helper;
+package com.example.jean.collectbeer.db;
 
 import android.provider.BaseColumns;
 
@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 
 public final class CervezasDbContract {
     public static final int DB_VERSION=1;
-    public static final String DB_NAME="collectbeer.db";
+    public static final String DB_NAME="CollectBeerDatabase.db";
     public static final String TEXT_TYPE=" TEXT";
     public static final String REAL_TYPE=" REAL";
     public static final String COMMA_SEP=",";
@@ -24,6 +24,7 @@ public final class CervezasDbContract {
         public static final String COLUMN_NAME_PAIS="pais";
         public static final String COLUMN_NAME_ALCOHOL="alcohol";
         public static final String COLUMN_NAME_OTRO="otro";
+        public static final String COLUMN_NAME_FOTO="foto";
         public static final String COLUMN_NAME_CALIFICACION="calificacion";
 
 
@@ -32,11 +33,15 @@ public final class CervezasDbContract {
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_NAME_NOMBRE + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_VARIEDAD + TEXT_TYPE + COMMA_SEP +
+                COLUMN_NAME_FOTO + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_ALCOHOL + REAL_TYPE + COMMA_SEP +
                 COLUMN_NAME_CALIFICACION + REAL_TYPE + COMMA_SEP +
                 COLUMN_NAME_OTRO + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_PAIS + TEXT_TYPE + " )";
+
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+        public static final String SHOW_TABLE="SELECT * FROM "+TABLE_NAME;
 
 
     }
