@@ -3,11 +3,18 @@ package com.example.jean.collectbeer.activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +34,9 @@ import com.example.jean.collectbeer.db.CervezasDbHelper;
 
 import java.io.File;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.Manifest.permission.CAMERA;
+
 public class NuevoActivity extends AppCompatActivity {
 
     //Para las fotos!
@@ -34,9 +45,9 @@ public class NuevoActivity extends AppCompatActivity {
     private final int MY_PERMISSIONS=100;
     private final int PHOTO_CODE=200;
     private final int SELECT_PICTURE=300;
-
+    static final int ADDED=1;
     private String mPath;
-
+    private LinearLayout layout;
     private EditText etNombre, etVariedad, etPais, etAlcohol, etOtro;
     private RatingBar ratingBar;
     private Button btGuardar, btCamara;
@@ -63,17 +74,17 @@ public class NuevoActivity extends AppCompatActivity {
         btGuardar=(Button) findViewById(R.id.btGuardar);
         btCamara=(Button) findViewById(R.id.btCamara);
         textFoto=(TextView) findViewById(R.id.textViewFoto);
+        layout=(LinearLayout) findViewById(R.id.layoutPrincipal);
 
 
-
-        /*if(mayRequestStoragePermission()){
+        if(mayRequestStoragePermission()){
             Toast.makeText(NuevoActivity.this, "Camara oermiso true", Toast.LENGTH_SHORT).show();
             btCamara.setEnabled(true);
         }else{
             Toast.makeText(NuevoActivity.this, "camara permiso FALSEE", Toast.LENGTH_SHORT).show();
             btCamara.setEnabled(false);
         }
-*/
+
         btCamara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +156,19 @@ public class NuevoActivity extends AppCompatActivity {
 
     }
 
+    //Para que no se pierda el nombre del path al cambiar a la camara
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString("file_path", mPath);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mPath=savedInstanceState.getString("file_path");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -185,16 +209,37 @@ public class NuevoActivity extends AppCompatActivity {
     }
 
     private boolean mayRequestStoragePermission() {
-        return true;
+        //verificar si version es menor a 6
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M)
+            return true;
+
+        //si los permisos estan aceptados ya, retornamos true
+        if((checkSelfPermission(WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
+                && (checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED))
+            return true;
+
+        //Si usamos un mensaje extra
+        if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))) {
+            Snackbar.make(layout, "Permisos necesarios para usar la aplicación", Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View v) {
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                }
+            }).show();
+        }else{
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+        }
+        return false;
     }
 
     private void agregarCerveza() {
-        CervezasDbHelper dbHelper=new CervezasDbHelper(getApplicationContext());
+        CervezasDbHelper dbHelper = new CervezasDbHelper(getApplicationContext());
         Log.i("DATABASESS", "Comienza getwritableatabase");
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         Log.i("DATABASESS", "TERMINA getwritableatabase");
 
-        ContentValues valores=new ContentValues();
+        ContentValues valores = new ContentValues();
         valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_NOMBRE, nombre);
         valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_VARIEDAD, variedad);
         valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_PAIS, pais);
@@ -204,10 +249,53 @@ public class NuevoActivity extends AppCompatActivity {
         valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_CALIFICACION, calificacion);
 
 
-        long insertado=db.insert(CervezasDbContract.Cervezas.TABLE_NAME, null, valores);
-        if(insertado>0)
+        long insertado = db.insert(CervezasDbContract.Cervezas.TABLE_NAME, null, valores);
+        if (insertado > 0) {
+
             Log.i("DATABASESS", "INSERTADO DATO TABLA");
-        else
+            Intent intent=new Intent();
+            setResult(1,intent);
+            finish();//finishing activity
+        }else{
             Log.i("DATABASESS", "ERROR INSETRTADO");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==MY_PERMISSIONS){
+            if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED
+                    && grantResults[1]==PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permisos aceptados", Toast.LENGTH_SHORT).show();
+                btCamara.setEnabled(true);
+            }
+        }else{
+            explicar();
+        }
+    }
+
+    private void explicar() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(NuevoActivity.this);
+        builder.setTitle("Permisos denegados");
+        builder.setMessage("Debe aceptar los permisos para tomar fotos!");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent=new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri=Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+           //     finish();
+            }
+        });
     }
 }

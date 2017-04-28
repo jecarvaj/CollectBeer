@@ -3,10 +3,15 @@ package com.example.jean.collectbeer.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.jean.collectbeer.R;
+
+import static android.R.attr.data;
+import static com.example.jean.collectbeer.activity.NuevoActivity.ADDED;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
@@ -24,18 +29,21 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
         consultar.setOnClickListener(this);
         mostrarTodo.setOnClickListener(this);
         configuracion.setOnClickListener(this);
+        Log.i("pruebaMain", "ANTES TODO CREATEEEE 1");
+
 
 
 
 
 }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.layoutNuevo:
                 intent=new Intent(this, NuevoActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
                 break;
             case R.id.layoutConsultar:
                 intent=new Intent(this, ConsultaActivity.class);
@@ -52,6 +60,13 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
         }
     }
 
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            Toast.makeText(this, "Guardado Correctamente!", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "HOLI", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
