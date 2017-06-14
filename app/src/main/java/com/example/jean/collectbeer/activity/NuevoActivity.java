@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.LayerDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +16,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,6 +79,23 @@ public class NuevoActivity extends AppCompatActivity {
         textFoto=(TextView) findViewById(R.id.textViewFoto);
         layout=(LinearLayout) findViewById(R.id.layoutPrincipal);
 
+        /*-------------------------------------------------------------------------------------------
+         * INICIO ARREGLO PROBLEMA DEL RATING BAR
+         * PARA PODER VER LAS ESTRELLAS EN COLORES
+         * ANDROID 5, API 21 Y 22
+         */
+        if (ratingBar.getProgressDrawable() instanceof LayerDrawable) {
+            LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+            DrawableCompat.setTint(stars.getDrawable(2), ContextCompat.getColor(this, R.color.colorAccent));
+        }
+        else {
+            // for Android 4.3, ratingBar.getProgressDrawable()=DrawableWrapperHoneycomb
+            DrawableCompat.setTint(ratingBar.getProgressDrawable(), ContextCompat.getColor(this, R.color.colorAccent));
+        }
+
+        /*
+         * FIN ARREGLO RATINGBAR
+         --------------------------------------------------------------------------------------------*/
 
         if(mayRequestStoragePermission()){
             Toast.makeText(NuevoActivity.this, "Camara oermiso true", Toast.LENGTH_SHORT).show();

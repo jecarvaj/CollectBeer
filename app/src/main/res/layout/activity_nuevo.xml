@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/layouts"
     tools:context="com.example.jean.collectbeer.activity.NuevoActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -103,13 +106,50 @@
             />
 
 
+        <android.support.v7.widget.AppCompatRatingBar
+            android:id="@+id/ratingBar"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="5"
+            android:stepSize="0.5"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </LinearLayout>
 
-        <RatingBar
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textViewNuevo"
+            android:id="@+id/textViewFoto"/>
+
+        <Button
+            android:id="@+id/btGuardar"
+            android:layout_gravity="center"
+            style="@style/boton"
+            android:text="Guardar"
+        />
+
+
+    </LinearLayout>
+    </ScrollView>
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+    </RelativeLayout>
+
+    <RatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,28 +161,6 @@
             />
 
 
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/textViewNuevo"
-            android:gravity="start"
-            android:id="@+id/textViewFoto"/>
-
-        <Button
-            android:id="@+id/btGuardar"
-            style="@style/boton"
-            android:text="Guardar">
-
-        </Button>
-    </RelativeLayout>
-
-
+-->
 
 </LinearLayout>
