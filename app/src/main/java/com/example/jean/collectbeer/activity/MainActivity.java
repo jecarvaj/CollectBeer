@@ -15,6 +15,7 @@ import static com.example.jean.collectbeer.activity.NuevoActivity.ADDED;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
+    public final static int REQUEST=10;
     Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,6 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
         configuracion.setOnClickListener(this);
         Log.i("pruebaMain", "ANTES TODO CREATEEEE 1");
 
-
-
-
-
 }
 
 
@@ -43,7 +40,7 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
         switch (v.getId()){
             case R.id.layoutNuevo:
                 intent=new Intent(this, NuevoActivity.class);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent,REQUEST);
                 break;
             case R.id.layoutConsultar:
                 intent=new Intent(this, ConsultaActivity.class);
@@ -63,10 +60,10 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1){
-            Toast.makeText(this, "Guardado Correctamente!", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "HOLI", Toast.LENGTH_SHORT).show();
+        if(requestCode==REQUEST){
+            if (resultCode==RESULT_OK) {
+                Toast.makeText(this, "Guardado Correctamente!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

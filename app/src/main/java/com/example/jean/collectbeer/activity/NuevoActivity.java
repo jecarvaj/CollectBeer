@@ -43,8 +43,8 @@ import static android.Manifest.permission.CAMERA;
 public class NuevoActivity extends AppCompatActivity {
 
     //Para las fotos!
-    private static String APP_DIRECTORY="CollectBeerApp/";
-    private static String MEDIA_DIRECTORY=APP_DIRECTORY+"CBeerPhotos";
+    private static String APP_DIRECTORY="CollectBeer/";
+    private static String MEDIA_DIRECTORY=APP_DIRECTORY+".CBeerPhotos"; //LE pongo punto para no ser visible en galeria
     private final int MY_PERMISSIONS=100;
     private final int PHOTO_CODE=200;
     private final int SELECT_PICTURE=300;
@@ -97,27 +97,37 @@ public class NuevoActivity extends AppCompatActivity {
          * FIN ARREGLO RATINGBAR
          --------------------------------------------------------------------------------------------*/
 
+
+        //Verifico si tengo permisos de cámara y habilito o no el boton para sacar foto
         if(mayRequestStoragePermission()){
-            Toast.makeText(NuevoActivity.this, "Camara oermiso true", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(NuevoActivity.this, "Camara oermiso true", Toast.LENGTH_SHORT).show();
             btCamara.setEnabled(true);
         }else{
-            Toast.makeText(NuevoActivity.this, "camara permiso FALSEE", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(NuevoActivity.this, "camara permiso FALSEE", Toast.LENGTH_SHORT).show();
             btCamara.setEnabled(false);
         }
 
+
+        //BOTON CAMARA:
+        //Al apretar boton de camara se muestran las opciones en un dialogo(tomar foto/de galeria/cancelar)
         btCamara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOptions();
+                //showOptions(); //ELIMINO OPCION DE GALERIA POR AHORA
+                openCamera();
             }
         });
 
+
+        //BOTON GUARDAR:
+        //Toma los datos de los inputs y llama a agregarCerveza() para guardarlos en la DB
+        //mientras haya un nombre por lo menos
         btGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nombre=etNombre.getText().toString();
                 variedad=etVariedad.getText().toString();
-                pais=etVariedad.getText().toString();
+                pais=etPais.getText().toString();
                 alcohol=etAlcohol.getText().toString();
                 otro=etOtro.getText().toString();
                 calificacion= ratingBar.getRating();
@@ -131,9 +141,14 @@ public class NuevoActivity extends AppCompatActivity {
         });
     }
 
+
+    /** ELIMINO OPCION DE CARGAR DE GALERIA POR AHORA
+     ---------------------------------------------------------------------------------------------
+    //Muestra el dialogo de opciones al apretar boton de camara
     private void showOptions() {
         final CharSequence[] option={"Tomar foto", "Elegir de galeria", "Cancelar"};
         final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
         builder.setTitle("Elige una opcion");
         builder.setItems(option, new DialogInterface.OnClickListener() {
             @Override
@@ -154,9 +169,13 @@ public class NuevoActivity extends AppCompatActivity {
         builder.show();
     }
 
+    FIN ELIMINO OPCION DE CARGAR DE GALERIA POR AHORA
+     ---------------------------------------------------------------------------------------------*/
+
     private void openCamera() {
         //Guardo la ruta del almacenamiento interno del dspositivos
         File file=new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+       // File file=new File(Environment.getDataDirectory(), MEDIA_DIRECTORY);
         boolean isDirectoryCreated=file.exists(); //Si el directorio está creado o no
         if(!isDirectoryCreated)
             isDirectoryCreated=file.mkdirs(); //Si el directorio no está creado, lo creamos
@@ -208,25 +227,29 @@ public class NuevoActivity extends AppCompatActivity {
                                             textFoto.setText(R.string.msgExitoSubirFoto);
                                         }
                                     });
-
-
-
                                 }
                             });
                     break;
-                case SELECT_PICTURE:
+               /**
+                * ELIMINO GALERIA POR AHORA
+                 case SELECT_PICTURE:
                     uriFoto=data.getDataString();
 
                     break;
+                */
             }
         }
     }
 
+    /**
+     * ELIMINO ABRIRGALERIA() POR AHORA
+     * ---------------------------------------------------------------------------------------
     private void abrirGaleria() {
         Intent intent =new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*"); //seleccionar imagen cualquier formato
         startActivityForResult(Intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE); //Escoger que app de imagen
     }
+------------------------------------------------------------------------------------------------------*/
 
     private boolean mayRequestStoragePermission() {
         //verificar si version es menor a 6
@@ -274,7 +297,7 @@ public class NuevoActivity extends AppCompatActivity {
 
             Log.i("DATABASESS", "INSERTADO DATO TABLA");
             Intent intent=new Intent();
-            setResult(1,intent);
+            setResult(RESULT_OK,intent);
             finish();//finishing activity
         }else{
             Log.i("DATABASESS", "ERROR INSETRTADO");
