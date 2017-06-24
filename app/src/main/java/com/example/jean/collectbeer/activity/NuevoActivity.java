@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -78,6 +79,11 @@ public class NuevoActivity extends AppCompatActivity {
         btCamara=(Button) findViewById(R.id.btCamara);
         textFoto=(TextView) findViewById(R.id.textViewFoto);
         layout=(LinearLayout) findViewById(R.id.layoutPrincipal);
+
+        //Agrego esto para que no se abra el keyboard automaticamente en el scrollview!!
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
 
         /*-------------------------------------------------------------------------------------------
          * INICIO ARREGLO PROBLEMA DEL RATING BAR
