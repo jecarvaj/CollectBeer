@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 
 public final class CervezasDbContract {
     public static final int DB_VERSION=1;
-    public static final String DB_NAME="CollectBeerDatabase.db";
+    public static final String DB_NAME="CollectBeerV3.db";
     public static final String TEXT_TYPE=" TEXT";
     public static final String REAL_TYPE=" REAL";
     public static final String COMMA_SEP=",";
@@ -26,12 +26,14 @@ public final class CervezasDbContract {
         public static final String COLUMN_NAME_OTRO="otro";
         public static final String COLUMN_NAME_FOTO="foto";
         public static final String COLUMN_NAME_CALIFICACION="calificacion";
+        public static final String COLUMN_NAME_FECHA="fecha";
 
 
         public static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_NAME_NOMBRE + TEXT_TYPE + COMMA_SEP +
+                COLUMN_NAME_FECHA +  " TIMESTAMP DEFAULT CURRENT_TIMESTAMP "+ COMMA_SEP +
                 COLUMN_NAME_VARIEDAD + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_FOTO + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_ALCOHOL + REAL_TYPE + COMMA_SEP +

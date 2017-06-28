@@ -32,6 +32,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jean.collectbeer.Beer;
 import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbContract;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
@@ -60,9 +61,9 @@ public class NuevoActivity extends AppCompatActivity {
     String variedad;
     String pais;
     String otro;
-    String alcohol;
     String uriFoto;
-    float calificacion;
+    Float calificacion, alcohol;
+    public static final String LOGCAT="PRUEBA";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class NuevoActivity extends AppCompatActivity {
         btCamara=(Button) findViewById(R.id.btCamara);
         textFoto=(TextView) findViewById(R.id.textViewFoto);
         layout=(LinearLayout) findViewById(R.id.layoutPrincipal);
-
+        Log.i(LOGCAT, "ON CREATE!!");
         //Agrego esto para que no se abra el keyboard automaticamente en el scrollview!!
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -134,13 +135,15 @@ public class NuevoActivity extends AppCompatActivity {
                 nombre=etNombre.getText().toString();
                 variedad=etVariedad.getText().toString();
                 pais=etPais.getText().toString();
-                alcohol=etAlcohol.getText().toString();
+                alcohol=Float.parseFloat(etAlcohol.getText().toString());
                 otro=etOtro.getText().toString();
                 calificacion= ratingBar.getRating();
 
                 if(nombre.isEmpty()){
+                    Log.i(LOGCAT, "FALTA NOMBREE");
                     Toast.makeText(NuevoActivity.this, "Debe especificar por lo menos un nombre!", Toast.LENGTH_SHORT).show();
                 }else{
+                    Log.i(LOGCAT, "ELSEE AGREGAR CERVEA");
                     agregarCerveza();
                 }
             }
@@ -283,30 +286,17 @@ public class NuevoActivity extends AppCompatActivity {
     }
 
     private void agregarCerveza() {
+        Beer cerveza=new Beer(nombre,variedad,pais,alcohol,otro,uriFoto,calificacion);
         CervezasDbHelper dbHelper = new CervezasDbHelper(getApplicationContext());
-        Log.i("DATABASESS", "Comienza getwritableatabase");
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Log.i("DATABASESS", "TERMINA getwritableatabase");
 
-        ContentValues valores = new ContentValues();
-        valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_NOMBRE, nombre);
-        valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_VARIEDAD, variedad);
-        valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_PAIS, pais);
-        valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_ALCOHOL, alcohol);
-        valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_OTRO, otro);
-        valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_FOTO, uriFoto);
-        valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_CALIFICACION, calificacion);
-
-
-        long insertado = db.insert(CervezasDbContract.Cervezas.TABLE_NAME, null, valores);
-        if (insertado > 0) {
-
-            Log.i("DATABASESS", "INSERTADO DATO TABLA");
+        long insertado=dbHelper.addBeer(cerveza);
+        if ( insertado>0){
+            Log.i(LOGCAT, "INSERTADO DATO TABLA");
             Intent intent=new Intent();
             setResult(RESULT_OK,intent);
             finish();//finishing activity
         }else{
-            Log.i("DATABASESS", "ERROR INSETRTADO");
+            Log.i(LOGCAT, "ERROR INSETRTADO");
         }
     }
 

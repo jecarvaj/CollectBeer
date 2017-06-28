@@ -30,7 +30,7 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
         consultar.setOnClickListener(this);
         mostrarTodo.setOnClickListener(this);
         configuracion.setOnClickListener(this);
-        Log.i("pruebaMain", "ANTES TODO CREATEEEE 1");
+        Log.i("PRUEBA", "ANTES DE TOdO CREATE MAIN ACTICYTY");
 
 }
 

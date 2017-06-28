@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/layouts"
     tools:context="com.example.jean.collectbeer.activity.MostrarActivity">
 
 
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/reciclador"
+    <GridView
+        android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="3dp"
-        android:scrollbars="vertical" />
-</LinearLayout>
+        android:columnWidth="120dp"
+        android:horizontalSpacing="2dp"
+        android:numColumns="auto_fit"
+        android:padding="1dp"
+        android:verticalSpacing="1dp" />
+</RelativeLayout>
