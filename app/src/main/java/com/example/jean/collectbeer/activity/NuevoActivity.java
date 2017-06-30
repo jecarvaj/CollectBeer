@@ -5,6 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -37,7 +40,10 @@ import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbContract;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Random;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
@@ -46,7 +52,7 @@ public class NuevoActivity extends AppCompatActivity {
 
     //Para las fotos!
     private static String APP_DIRECTORY="CollectBeer/";
-    private static String MEDIA_DIRECTORY=APP_DIRECTORY+".CBeerPhotos"; //LE pongo punto para no ser visible en galeria
+    private static String MEDIA_DIRECTORY=APP_DIRECTORY+"CBeerPhotos"; //LE pongo punto para no ser visible en galeria
     private final int MY_PERMISSIONS=100;
     private final int PHOTO_CODE=200;
     private final int SELECT_PICTURE=300;
@@ -56,7 +62,7 @@ public class NuevoActivity extends AppCompatActivity {
     private EditText etNombre, etVariedad, etPais, etAlcohol, etOtro;
     private RatingBar ratingBar;
     private Button btGuardar, btCamara;
-    private TextView textFoto;
+    private ImageView imgViewBeer;
     String nombre;
     String variedad;
     String pais;
@@ -78,8 +84,8 @@ public class NuevoActivity extends AppCompatActivity {
         ratingBar=(RatingBar) findViewById(R.id.ratingBar);
         btGuardar=(Button) findViewById(R.id.btGuardar);
         btCamara=(Button) findViewById(R.id.btCamara);
-        textFoto=(TextView) findViewById(R.id.textViewFoto);
         layout=(LinearLayout) findViewById(R.id.layoutPrincipal);
+        imgViewBeer=(ImageView) findViewById(R.id.imgBeerNuevo);
         Log.i(LOGCAT, "ON CREATE!!");
         //Agrego esto para que no se abra el keyboard automaticamente en el scrollview!!
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -182,25 +188,8 @@ public class NuevoActivity extends AppCompatActivity {
      ---------------------------------------------------------------------------------------------*/
 
     private void openCamera() {
-        //Guardo la ruta del almacenamiento interno del dspositivos
-        File file=new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
-       // File file=new File(Environment.getDataDirectory(), MEDIA_DIRECTORY);
-        boolean isDirectoryCreated=file.exists(); //Si el directorio está creado o no
-        if(!isDirectoryCreated)
-            isDirectoryCreated=file.mkdirs(); //Si el directorio no está creado, lo creamos
-
-        if(isDirectoryCreated){
-            Long timestamp=System.currentTimeMillis()/1000; //para nombre unico
-            String imageName="beer_"+timestamp.toString()+".jpg"; //nombre de imagen
-            mPath=Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
-                    + File.separator+imageName;
-            File newFile=new File(mPath);
-
-            //abro camara y le paso la url de la foto que sacaré..creo?
-            Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
-            startActivityForResult(intent, PHOTO_CODE);
-        }
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, PHOTO_CODE);
 
     }
 
@@ -223,21 +212,16 @@ public class NuevoActivity extends AppCompatActivity {
         if(resultCode==RESULT_OK){
             switch (requestCode){
                 case PHOTO_CODE:
-                    MediaScannerConnection.scanFile(this,new String[]{mPath},
-                            null,
-                            new MediaScannerConnection.OnScanCompletedListener(){
-                                @Override
-                                public void onScanCompleted(String path, final Uri uri){
-                                    uriFoto=uri.toString();
+                    if(data.getExtras().get("data")!=null){
+                        Bitmap photo = (Bitmap) data.getExtras().get("data");
+                        //Bitmap resized = Bitmap.createScaledBitmap(photo, 480, 640, true);
+                        Bitmap resized = Bitmap.createScaledBitmap(photo, 260, 347, true);
+                        imgViewBeer.setImageBitmap(resized);
+                        Toast.makeText(this, "SI HAY HAY FOTO >"+data.getExtras().get("data").toString(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(this, "NO HAY FOTO >"+data.getExtras().get("data").toString(), Toast.LENGTH_SHORT).show();
+                    }
 
-                                    runOnUiThread(new Runnable() { //para actualizar correctamente la vista
-                                        @Override
-                                        public void run() {
-                                            textFoto.setText(R.string.msgExitoSubirFoto);
-                                        }
-                                    });
-                                }
-                            });
                     break;
                /**
                 * ELIMINO GALERIA POR AHORA
@@ -286,7 +270,7 @@ public class NuevoActivity extends AppCompatActivity {
     }
 
     private void agregarCerveza() {
-        Beer cerveza=new Beer(nombre,variedad,pais,alcohol,otro,uriFoto,calificacion);
+        Beer cerveza=new Beer(nombre,variedad,pais,otro,imageViewToByte(imgViewBeer),calificacion,alcohol);
         CervezasDbHelper dbHelper = new CervezasDbHelper(getApplicationContext());
 
         long insertado=dbHelper.addBeer(cerveza);
@@ -336,5 +320,13 @@ public class NuevoActivity extends AppCompatActivity {
            //     finish();
             }
         });
+    }
+
+    public static byte[] imageViewToByte(ImageView image) {
+        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
     }
 }

@@ -9,20 +9,21 @@ import java.sql.Timestamp;
 public class Beer {
     private int id;
     private Timestamp fecha;
-    private String nombre, variedad,  pais, otro,  uriFoto;
+    private String nombre, variedad,  pais, otro;
+    private byte[] uriFoto;
     private Float calificacion, alcohol;
 
     public Beer() {
     }
 
-    public Beer(String nombre, String variedad, String pais, Float alcohol, String otro, String uriFoto, Float calificacion) {
+    public Beer(String nombre, String variedad, String pais, String otro, byte[] uriFoto, Float calificacion, Float alcohol) {
         this.nombre = nombre;
         this.variedad = variedad;
         this.pais = pais;
-        this.alcohol = alcohol;
         this.otro = otro;
         this.uriFoto = uriFoto;
         this.calificacion = calificacion;
+        this.alcohol = alcohol;
     }
 
     public int getId() {
@@ -33,16 +34,16 @@ public class Beer {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
     public Timestamp getFecha() {
         return fecha;
     }
 
     public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public void setNombre(String nombre) {
@@ -65,14 +66,6 @@ public class Beer {
         this.pais = pais;
     }
 
-    public Float getAlcohol() {
-        return alcohol;
-    }
-
-    public void setAlcohol(Float alcohol) {
-        this.alcohol = alcohol;
-    }
-
     public String getOtro() {
         return otro;
     }
@@ -81,11 +74,11 @@ public class Beer {
         this.otro = otro;
     }
 
-    public String getUriFoto() {
+    public byte[] getUriFoto() {
         return uriFoto;
     }
 
-    public void setUriFoto(String uriFoto) {
+    public void setUriFoto(byte[] uriFoto) {
         this.uriFoto = uriFoto;
     }
 
@@ -95,5 +88,13 @@ public class Beer {
 
     public void setCalificacion(Float calificacion) {
         this.calificacion = calificacion;
+    }
+
+    public Float getAlcohol() {
+        return alcohol;
+    }
+
+    public void setAlcohol(Float alcohol) {
+        this.alcohol = alcohol;
     }
 }

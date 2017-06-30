@@ -16,22 +16,42 @@
         android:layout_height="wrap_content"
         >
 
-        <Button
-            android:id="@+id/btCamara"
-            android:layout_width="70dp"
-            android:layout_height="65dp"
-            android:background="@drawable/ic_add_a_photo_white_48dp"
-            android:layout_gravity="end"
-            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-10dp">
+
+            <ImageView
+                android:id="@+id/imgBeerNuevo"
+                android:layout_centerHorizontal="true"
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:src="@drawable/imgnuevo260x347"/>
+
+            <Button
+                android:id="@+id/btCamara"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_add_a_photo_white_48dp"
+                />
+        </RelativeLayout>
+
+
+
 
         <TextView
             android:text="@string/nombre"
             style="@style/textViewNuevo" />
-        <EditText
-            android:id="@+id/etNombre"
-            android:hint="@string/nombreEj"
-            style="@style/editTextNuevo"
-            />
+
+            <EditText
+                android:id="@+id/etNombre"
+                android:hint="@string/nombreEj"
+                style="@style/editTextNuevo"
+                />
+
+
+
 
 
         <TextView
@@ -125,12 +145,6 @@
         </LinearLayout>
 
 
-        <TextView
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/textViewNuevo"
-            android:id="@+id/textViewFoto"/>
 
         <Button
             android:id="@+id/btGuardar"

@@ -68,8 +68,8 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
         return insertado;
     }
 
-    public List<Beer> getAllData() {
-        List<Beer> beerList = new ArrayList<Beer>();
+    public ArrayList<Beer> getAllData() {
+        ArrayList<Beer> beerList = new ArrayList<Beer>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + CervezasDbContract.Cervezas.TABLE_NAME;
 
@@ -84,7 +84,7 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
                 beer.setNombre(cursor.getString(1));
                 beer.setFecha(Timestamp.valueOf(cursor.getString(2)));
                 beer.setVariedad(cursor.getString(3));
-                beer.setUriFoto(cursor.getString(4));
+                beer.setUriFoto(cursor.getBlob(4));
                 beer.setAlcohol(Float.parseFloat(cursor.getString(5)));
                 beer.setCalificacion(Float.parseFloat(cursor.getString(6)));
                 beer.setOtro(cursor.getString(7));
