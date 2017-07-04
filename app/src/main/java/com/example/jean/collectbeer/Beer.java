@@ -1,6 +1,7 @@
 package com.example.jean.collectbeer;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 /**
  * Created by Jean on 27-06-2017.
@@ -96,5 +97,34 @@ public class Beer {
 
     public void setAlcohol(Float alcohol) {
         this.alcohol = alcohol;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Beer beer = (Beer) o;
+
+        if (!nombre.equals(beer.nombre)) return false;
+        if (variedad != null ? !variedad.equals(beer.variedad) : beer.variedad != null)
+            return false;
+        if (pais != null ? !pais.equals(beer.pais) : beer.pais != null) return false;
+        if (otro != null ? !otro.equals(beer.otro) : beer.otro != null) return false;
+        if (calificacion != null ? !calificacion.equals(beer.calificacion) : beer.calificacion != null)
+            return false;
+        return alcohol != null ? alcohol.equals(beer.alcohol) : beer.alcohol == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nombre.hashCode();
+        result = 31 * result + (variedad != null ? variedad.hashCode() : 0);
+        result = 31 * result + (pais != null ? pais.hashCode() : 0);
+        result = 31 * result + (otro != null ? otro.hashCode() : 0);
+        result = 31 * result + (calificacion != null ? calificacion.hashCode() : 0);
+        result = 31 * result + (alcohol != null ? alcohol.hashCode() : 0);
+        return result;
     }
 }

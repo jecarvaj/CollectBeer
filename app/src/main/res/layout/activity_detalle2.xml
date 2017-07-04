@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/layouts"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.example.jean.collectbeer.activity.NuevoActivity"
+
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            >
+
+           <!-- <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-10dp">
+
+                <ImageView
+                    android:id="@+id/imgBeerNuevo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="100dp"
+                    android:layout_height="130dp"
+                    android:src="@drawable/imgnuevo260x347"/>
+
+                <Button
+                    android:id="@+id/btCamara"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_add_a_photo_white_48dp"
+                    />
+            </RelativeLayout>-->
+
+
+
+
+            <TextView
+                android:text="@string/nombre"
+                style="@style/tvDetalle" />
+
+            <EditText
+                android:id="@+id/etNombreDetalle"
+                android:hint="@string/nombreEj"
+                android:text="holaaa"
+                style="@style/etDetalle"
+                />
+
+
+
+
+
+            <TextView
+                android:text="@string/variedad"
+                style="@style/tvDetalle" />
+            <EditText
+                android:id="@+id/etVariedadDetalle"
+                android:hint="@string/variedadEj"
+                android:text="holaaa"
+                style="@style/etDetalle"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    >
+                    <TextView
+                        android:id="@+id/textViewPais"
+                        android:text="@string/pais"
+                        style="@style/tvDetalle" />
+                    <EditText
+                        android:layout_below="@id/textViewPais"
+                        android:id="@+id/etPaisDetalle"
+                        android:layout_marginEnd="10dp"
+                        android:hint="@string/paisEj"
+                        android:text="holaaa"
+                        style="@style/etDetalle"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/textViewAlcohol"
+                        android:text="@string/alcohol"
+                        style="@style/tvDetalle"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="false"/>
+                    <EditText
+                        android:id="@+id/etAlcoholDetalle"
+                        android:inputType="numberDecimal"
+                        android:layout_marginStart="10dp"
+                        android:hint="@string/alcoholEj"
+                        android:text="holaaa"
+                        style="@style/etDetalle"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/textViewAlcohol"
+                        android:layout_centerHorizontal="true"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:text="@string/otro"
+                style="@style/tvDetalle" />
+            <EditText
+                android:id="@+id/etOtroDetalle"
+                android:hint="@string/otroEj"
+                android:text="holaaa"
+                style="@style/etDetalle"
+                android:maxLines="2"
+                android:lines="2"
+                android:inputType="textCapSentences"
+
+                />
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/ratingBarDetalle"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize="0.5"
+                />
+
+
+            <ImageView
+                android:id="@+id/imageViewDetalle"
+                android:layout_gravity="center"
+                android:layout_width="190dp"
+                android:layout_height="253dp"
+                android:layout_marginBottom="20dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+    </RelativeLayout>
+
+    <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            android:numStars="5"
+            android:rating="5"
+            android:stepSize="0.5"
+            />
+
+
+-->
+
+</LinearLayout>

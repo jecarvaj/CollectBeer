@@ -3,6 +3,7 @@
     <color name="colorPrimary">#080808</color>
     <color name="colorPrimaryDark">#3b3b3b</color>
     <color name="colorAccent">#bc941b</color>
+    <color name="colorAccent_shadow">#1abc941b</color>
     <color name="shadow_lighter_color">#64fdfcfc</color>
     <color name="shadow_item_color">#b2000000</color>
     <color name="hintNuevo">#494848</color>

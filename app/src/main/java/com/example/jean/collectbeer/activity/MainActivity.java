@@ -44,7 +44,7 @@ RelativeLayout nuevo, consultar, mostrarTodo, configuracion;
                 break;
             case R.id.layoutConsultar:
                 intent=new Intent(this, ConsultaActivity.class);
-                startActivity(intent);;
+                startActivity(intent);
                 break;
             case R.id.layoutMostrar:
                 intent=new Intent(this, MostrarActivity.class);

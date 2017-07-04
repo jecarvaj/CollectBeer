@@ -271,7 +271,7 @@ public class NuevoActivity extends AppCompatActivity {
 
     private void agregarCerveza() {
         Beer cerveza=new Beer(nombre,variedad,pais,otro,imageViewToByte(imgViewBeer),calificacion,alcohol);
-        CervezasDbHelper dbHelper = new CervezasDbHelper(getApplicationContext());
+        CervezasDbHelper dbHelper =CervezasDbHelper.getInstance(getApplicationContext());
 
         long insertado=dbHelper.addBeer(cerveza);
         if ( insertado>0){

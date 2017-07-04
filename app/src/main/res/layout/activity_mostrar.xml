@@ -6,14 +6,16 @@
     tools:context="com.example.jean.collectbeer.activity.MostrarActivity">
 
 
-    <GridView
-        android:id="@+id/gridBeer"
+   <android.support.v7.widget.RecyclerView
+        android:id="@+id/reciclerView"
+       android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="120dp"
-        android:stretchMode="columnWidth"
-        android:horizontalSpacing="2dp"
+
+        android:horizontalSpacing="1dp"
         android:numColumns="auto_fit"
         android:padding="1dp"
         android:verticalSpacing="1dp" />
+
 </RelativeLayout>

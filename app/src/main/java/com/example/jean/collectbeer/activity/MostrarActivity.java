@@ -2,52 +2,51 @@ package com.example.jean.collectbeer.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.GridView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.example.jean.collectbeer.Beer;
-import com.example.jean.collectbeer.BeerListAdapter;
+import com.example.jean.collectbeer.BeerListAdapterRecycler;
 import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MostrarActivity extends AppCompatActivity {
-
+/*
     GridView gridView;
     ArrayList<Beer> list;
-    BeerListAdapter adapter=null;
+    BeerListAdapter adapter=null;*/
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<Beer> myDataset;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar);
 
-        gridView=(GridView) findViewById(R.id.gridBeer);
-        //list = new ArrayList<>();
-        CervezasDbHelper dbHelper = new CervezasDbHelper(getApplicationContext());
-        list=dbHelper.getAllData();
-        adapter=new BeerListAdapter(this, R.layout.beer_item2, list);
-        gridView.setAdapter(adapter);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.reciclerView);
 
 
-        adapter.notifyDataSetChanged();
-        mostrarTodo();
-    }
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
 
-    private void mostrarTodo() {
-        List<Beer> cervezas=list;
-        for(int x=0; x<cervezas.size(); x++){
-            Log.i("DATABASE", "ID      :"+String.valueOf(cervezas.get(x).getId()));
-            Log.i("DATABASE", "NOMBRE  :"+cervezas.get(x).getNombre());
-            Log.i("DATABASE", "OTRO    :"+cervezas.get(x).getOtro());
-            Log.i("DATABASE", "FOTO    :"+cervezas.get(x).getUriFoto());
-            Log.i("DATABASE", "FECHA   :"+String.valueOf(cervezas.get(x).getFecha()));
-            Log.i("DATABASE", "ALCOHOL :"+String.valueOf(cervezas.get(x).getAlcohol()));
-            Log.i("DATABASE", "RATING  :"+String.valueOf(cervezas.get(x).getCalificacion()));
-            Log.i("DATABASE", "----------------------------------------------------------------");
-        }
+        // use a linear layout manager
+        mLayoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        CervezasDbHelper dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
+        myDataset = dbHelper.getAllData();
+        // specify an adapter (see also next example)
+        mAdapter = new BeerListAdapterRecycler(this, R.id.card_view, myDataset);
+        mRecyclerView.setAdapter(mAdapter);
+
 
     }
 }
+

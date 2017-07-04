@@ -9,6 +9,8 @@
         <item name="android:imeOptions">flagNoExtractUi</item>
     </style>
 
+
+
     <style name="layouts">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -51,7 +53,6 @@
     <style name="textViewNuevo">
         <item name="android:layout_margin">4dp</item>
         <item name="android:textColor">#874301</item>
-
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -90,7 +91,6 @@
 
     </style>
     <style name="layoutItem">
-
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
@@ -98,11 +98,25 @@
 
     </style>
     <style name="tv_item">
-
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">Kuntsman Gran Torobayo</item>
+    </style>
+
+    <style name="tvDetalle" parent="textViewNuevo">
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="etDetalle" parent="editTextNuevo">
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/selector_detalle</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textColor">@drawable/selector_text_detalle</item>
+        <item name="android:configChanges">keyboardHidden|orientation|screenSize</item>
+        <item name="android:state_enabled">true</item>
+        <item name="android:state_focused">true</item>
     </style>
 </resources>

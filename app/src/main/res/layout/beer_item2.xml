@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
-
+    android:layout_height="200dp"
+    card_view:contentPadding="2dp"
+    card_view:cardBackgroundColor="@color/colorAccent_shadow"
+    card_view:cardMaxElevation="4dp"
+    card_view:cardElevation="2dp"
+    >
     <ImageView
         android:id="@+id/imgBeer"
         android:layout_width="match_parent"
@@ -21,7 +28,7 @@
         android:textColor="@android:color/white"
         android:background="@color/shadow_item_color"
        >
-        <RatingBar
+        <android.support.v7.widget.AppCompatRatingBar
             android:id="@+id/ratingBarItem"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
@@ -61,4 +68,4 @@
 
 
 
-</FrameLayout>
+</android.support.v7.widget.CardView>
