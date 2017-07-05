@@ -2,6 +2,8 @@ package com.example.jean.collectbeer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.content.IntentCompat;
@@ -25,6 +27,7 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
     public ImageView imageView;
     public RatingBar ratingBar;
     public TextView tvNombre, tvVariedad, tvPais;
+    private Beer currentBeer;
 
 
     public RecyclerViewHolders(View itemView) {
@@ -47,13 +50,27 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
 
     }
 
+    void bind (Beer item) {  //<--bind method allows the ViewHolder to bind to the data it is displaying
+        tvNombre.setText(item.getNombre());
+        tvVariedad.setText(item.getVariedad()+" "+String.valueOf(item.getAlcohol())+"°");
+        tvPais.setText(item.getPais());
+        ratingBar.setRating(item.getCalificacion());
+
+        byte[] imgBeer = item.getUriFoto();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imgBeer, 0, imgBeer.length);
+        imageView.setImageBitmap(bitmap);
+
+        currentBeer = item; //<-- keep a reference to the current item
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(v.getContext(), DetalleActivity.class);
-        intent.putExtra("id",(Integer) (getLayoutPosition()+1));
+
+        intent.putExtra("currentBeer",currentBeer);
         v.getContext().startActivity(intent);
         ((Activity)v.getContext()).overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-        ((Activity)v.getContext()).finish();
+        //((Activity)v.getContext()).finish();
 
     }
 

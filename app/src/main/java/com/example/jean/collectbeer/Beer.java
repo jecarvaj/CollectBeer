@@ -1,5 +1,9 @@
 package com.example.jean.collectbeer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -7,7 +11,7 @@ import java.util.Arrays;
  * Created by Jean on 27-06-2017.
  */
 
-public class Beer {
+public class Beer implements Serializable{
     private int id;
     private Timestamp fecha;
     private String nombre, variedad,  pais, otro;
@@ -26,6 +30,7 @@ public class Beer {
         this.calificacion = calificacion;
         this.alcohol = alcohol;
     }
+
 
     public int getId() {
         return id;
@@ -127,4 +132,6 @@ public class Beer {
         result = 31 * result + (alcohol != null ? alcohol.hashCode() : 0);
         return result;
     }
+
+
 }

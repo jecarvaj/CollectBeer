@@ -63,11 +63,11 @@ public class DetalleActivity extends AppCompatActivity {
 
         imagen=(ImageView) findViewById(R.id.imageViewDetalle);
 
-       id=getIntent().getExtras().getInt("id");
-        CervezasDbHelper dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
-      beerOld=dbHelper.getBeer(id);
+      // id=getIntent().getExtras().getInt("id");
+        //CervezasDbHelper dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
+      //beerOld=dbHelper.getBeer(id);
         //ArrayList<Beer> myDataset = dbHelper.getAllData();
-
+        beerOld=(Beer) getIntent().getExtras().getSerializable("currentBeer");
         imgBeer = beerOld.getUriFoto();
         Bitmap bitmap = BitmapFactory.decodeByteArray(imgBeer, 0, imgBeer.length);
 
@@ -148,9 +148,9 @@ public class DetalleActivity extends AppCompatActivity {
         Log.i("DATABASE", "RATING OLD= "+beerOld.getCalificacion()+" --- NEW= "+beerNew.getCalificacion());
         if(beerNew.equals(beerOld)){
             DetalleActivity.this.finish();
-            Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
-            overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-            startActivity(intent);
+            //Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
+            //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+            //startActivity(intent);
         }else{
             mostrarDialogo();
         }
@@ -172,9 +172,9 @@ public class DetalleActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         DetalleActivity.this.finish();
-                        Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
-                        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                        startActivity(intent);
+                       // Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
+                        //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                        //startActivity(intent);
                     }
                 });
 
@@ -186,14 +186,14 @@ public class DetalleActivity extends AppCompatActivity {
 
     private void updateBeer() {
             CervezasDbHelper dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
-            long insertado=dbHelper.update(beerNew,id);
+            long insertado=dbHelper.update(beerNew,beerOld.getId());
             if ( insertado>0){
                 Log.i("DATABASE", "UPDATEEE DATO TABLA");
                 Toast.makeText(DetalleActivity.this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
-                 Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
+                 //Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
 
-                startActivity(intent);
-                overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                //startActivity(intent);
+                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 finish();
             }else{
                 Log.i("DATABASE", "ERROR UPDATE");

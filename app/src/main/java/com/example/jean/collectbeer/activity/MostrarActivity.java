@@ -1,9 +1,15 @@
 package com.example.jean.collectbeer.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.jean.collectbeer.Beer;
 import com.example.jean.collectbeer.BeerListAdapterRecycler;
@@ -12,41 +18,117 @@ import com.example.jean.collectbeer.db.CervezasDbHelper;
 
 import java.util.ArrayList;
 
-public class MostrarActivity extends AppCompatActivity {
-/*
-    GridView gridView;
-    ArrayList<Beer> list;
-    BeerListAdapter adapter=null;*/
+public class MostrarActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Beer> myDataset;
-
+    private BeerListAdapterRecycler mAdapter;
+    Toolbar myToolbar;
+    CervezasDbHelper dbHelper;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar);
 
+        initToolbar();
+        initRecycler();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.reciclerView);
+    }
 
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("DATABASE1", "MOSTRAR ACTICITY");
+        mAdapter.update(dbHelper.getAllData());
+    }
+
+
+    private void initToolbar() {
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+    }
+
+    private void initRecycler() {
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.reciclerView);
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
-        mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        CervezasDbHelper dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
-        myDataset = dbHelper.getAllData();
-        // specify an adapter (see also next example)
-        mAdapter = new BeerListAdapterRecycler(this, R.id.card_view, myDataset);
+        dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
+        mAdapter = new BeerListAdapterRecycler(this, R.id.card_view, dbHelper.getAllData());
         mRecyclerView.setAdapter(mAdapter);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
 
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+
+        MenuItemCompat.setOnActionExpandListener(item,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        Log.i("TOOLBAR","----------COLLAPSED");
+                       mAdapter.setFilter(dbHelper.getAllData());
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        Log.i("TOOLBAR","----------EXPANDEEEDD");
+                        return true;
+                    }
+                });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_search:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        prepareFilter(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        prepareFilter(newText);
+        return true;
+    }
+
+    private void prepareFilter(String newText){
+        ArrayList<Beer> filteredModelList = filter(dbHelper.getAllData(), newText);
+        mAdapter.setFilter(filteredModelList);
+    }
+
+    private ArrayList<Beer> filter(ArrayList<Beer> beers, String query) {
+        query = query.toLowerCase();
+        ArrayList<Beer> filteredModelList = new ArrayList<>();
+        for (Beer beer : beers) {
+            String nombre = beer.getNombre().toLowerCase();
+            String variedad=beer.getVariedad().toLowerCase();
+            String pais=beer.getPais().toLowerCase();
+            if (nombre.contains(query)
+                    || variedad.contains(query)
+                    || pais.contains(query)) {
+                filteredModelList.add(beer);
+            }
+        }
+        return filteredModelList;
     }
 }
 

@@ -2,20 +2,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/layouts"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back1"
     tools:context="com.example.jean.collectbeer.activity.MostrarActivity">
 
+   <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+       android:id="@+id/my_toolbar"
+       android:layout_width="match_parent"
+       android:layout_height="?attr/actionBarSize"
+       android:background="@color/colorPrimary"
+       android:elevation="4dp"
+       app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+       app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
    <android.support.v7.widget.RecyclerView
+       android:layout_below="@id/my_toolbar"
         android:id="@+id/reciclerView"
        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnWidth="120dp"
-
         android:horizontalSpacing="1dp"
         android:numColumns="auto_fit"
-        android:padding="1dp"
         android:verticalSpacing="1dp" />
 
 </RelativeLayout>

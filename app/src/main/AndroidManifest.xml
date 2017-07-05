@@ -25,7 +25,7 @@
         <activity android:name=".activity.NuevoActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".activity.ConsultaActivity" />
         <activity android:name=".activity.ConfigActivity" />
-        <activity android:name=".activity.MostrarActivity" />
+        <activity android:name=".activity.MostrarActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".activity.DetalleActivity" android:configChanges="keyboardHidden|orientation|screenSize">
 
         </activity>
