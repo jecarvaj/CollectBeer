@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     card_view:contentPadding="2dp"
-    card_view:cardBackgroundColor="@color/colorAccent_shadow"
+    card_view:cardBackgroundColor="@color/cardview_shadow_end_color"
     card_view:cardMaxElevation="4dp"
     card_view:cardElevation="2dp"
     >
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textColor="@android:color/white"
+        android:textColor="@color/secondary_text"
         android:background="@color/shadow_item_color"
        >
         <android.support.v7.widget.AppCompatRatingBar
@@ -47,7 +47,7 @@
                 />
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             style="@style/layoutItem">
             <TextView
                 android:id="@+id/tvVariedad"
@@ -61,7 +61,7 @@
                 android:textAlignment="textEnd"
                 android:layout_marginEnd="7dp"
                 android:layout_weight="0.6"/>
-        </LinearLayout>
+        </LinearLayout>-->
 
     </LinearLayout>
 

@@ -3,8 +3,8 @@
     package="com.example.jean.collectbeer">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+   <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
 
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
 
@@ -15,19 +15,21 @@
         android:roundIcon="@mipmap/collectbeer_2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+
+        <activity android:name=".activity.NuevoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+
+        <activity android:name=".activity.MostrarActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.NuevoActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".activity.ConsultaActivity" />
-        <activity android:name=".activity.ConfigActivity" />
-        <activity android:name=".activity.MostrarActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".activity.DetalleActivity" android:configChanges="keyboardHidden|orientation|screenSize">
 
+        <activity android:name=".activity.DetalleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
     </application>
 

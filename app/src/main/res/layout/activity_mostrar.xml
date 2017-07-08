@@ -4,17 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back1"
+    android:background="@drawable/back2"
     tools:context="com.example.jean.collectbeer.activity.MostrarActivity">
 
-   <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
-       android:id="@+id/my_toolbar"
-       android:layout_width="match_parent"
-       android:layout_height="?attr/actionBarSize"
-       android:background="@color/colorPrimary"
-       android:elevation="4dp"
-       app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-       app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+   <include layout="@layout/toolbar" android:id="@+id/my_toolbar"/>
 
    <android.support.v7.widget.RecyclerView
        android:layout_below="@id/my_toolbar"
@@ -26,5 +19,17 @@
         android:horizontalSpacing="1dp"
         android:numColumns="auto_fit"
         android:verticalSpacing="1dp" />
+
+   <android.support.design.widget.FloatingActionButton
+       android:id="@+id/fab"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       android:layout_alignParentEnd="true"
+       app:elevation="16dp"
+       app:borderWidth="0dp"
+       app:fabSize="normal"
+       android:layout_margin="16dp"
+       android:src="@drawable/ic_action_new_white" />
 
 </RelativeLayout>

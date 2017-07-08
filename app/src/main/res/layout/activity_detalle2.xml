@@ -8,6 +8,7 @@
     tools:context="com.example.jean.collectbeer.activity.NuevoActivity"
 
     >
+    <include layout="@layout/toolbar" android:id="@+id/my_toolbar"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

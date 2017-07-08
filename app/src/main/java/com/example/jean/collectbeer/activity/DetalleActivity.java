@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jean.collectbeer.Beer;
+import com.example.jean.collectbeer.Helper;
 import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
 
@@ -39,8 +42,9 @@ public class DetalleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle2);
-
+        Helper.initToolbar(this);
         init();
+
 
 
          /*-------------------------------------------------------------------------------------------
@@ -90,6 +94,26 @@ public class DetalleActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detalle, menu);
+     //  MenuItem item= menu.findItem(R.id.action_camara);
+        return true;
+       // return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_delete:
+                Toast.makeText(this, "CAMARA", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void init() {
 
         nombre=(EditText) findViewById(R.id.etNombreDetalle);
@@ -98,11 +122,6 @@ public class DetalleActivity extends AppCompatActivity {
         otro=(EditText) findViewById(R.id.etOtroDetalle);
         ratinBar=(RatingBar) findViewById(R.id.ratingBarDetalle);
         alcohol=(EditText) findViewById(R.id.etAlcoholDetalle);
-
-
-
-
-
     }
 
 
@@ -128,28 +147,11 @@ public class DetalleActivity extends AppCompatActivity {
 
         beerNew=new Beer(oldNombre, oldVariedad, oldPais, oldOtro,imgBeer,oldRatinBar, oldAlcohol );
 
-        /*if(nombre.getText().toString().equals(oldNombre)
-                && variedad.getText().toString().equals(oldVariedad)
-                && pais.getText().toString().equals(oldPais)
-                && otro.getText().toString().equals(oldOtro)
-                && ratinBar.getRating()==oldRatinBar
-                && alcohol.getText().toString().equals(oldAlcohol.toString())){
-            DetalleActivity.this.finish();
-        }else{
-            mostrarDialogo();
-        }*/
 
-        Log.i("DATABASE", "id OLD= "+beerOld.getId()+" --- NEW= "+beerNew.getId());
-        Log.i("DATABASE", "FECHA OLD= "+beerOld.getFecha()+" --- NEW= "+beerNew.getFecha());
-        Log.i("DATABASE", "NM OLD= "+beerOld.getNombre()+" --- NEW= "+beerNew.getNombre());
-        Log.i("DATABASE", "VARIEDAd OLD= "+beerOld.getVariedad()+" --- EW= "+beerNew.getVariedad());
-        Log.i("DATABASE", "PAIS OLD= "+beerOld.getPais()+" --- NEW= "+beerNew.getPais());
-        Log.i("DATABASE", "ALCOHOL OLD= "+beerOld.getAlcohol()+" --- NEW= "+beerNew.getAlcohol());
-        Log.i("DATABASE", "RATING OLD= "+beerOld.getCalificacion()+" --- NEW= "+beerNew.getCalificacion());
         if(beerNew.equals(beerOld)){
             DetalleActivity.this.finish();
             //Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
-            //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+            overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
             //startActivity(intent);
         }else{
             mostrarDialogo();
@@ -173,7 +175,7 @@ public class DetalleActivity extends AppCompatActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         DetalleActivity.this.finish();
                        // Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
-                        //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                        overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                         //startActivity(intent);
                     }
                 });
@@ -193,8 +195,9 @@ public class DetalleActivity extends AppCompatActivity {
                  //Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
 
                 //startActivity(intent);
-                //overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 finish();
+                overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+
             }else{
                 Log.i("DATABASE", "ERROR UPDATE");
             }

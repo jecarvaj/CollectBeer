@@ -1,24 +1,16 @@
-package com.example.jean.collectbeer;
+package com.example.jean.collectbeer.recyclerview;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.jean.collectbeer.activity.DetalleActivity;
+import com.example.jean.collectbeer.Beer;
+import com.example.jean.collectbeer.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jean on 30-06-2017.
@@ -81,7 +73,7 @@ public class BeerListAdapterRecycler extends RecyclerView.Adapter<RecyclerViewHo
 */
 
     public void update(ArrayList<Beer> datas){
-        Log.i("DATABASE", "HAGO UPDATE DE "+datas.get(10).getNombre());
+        //Log.i("DATABASE", "HAGO UPDATE DE "+datas.get(10).getNombre());
         itemList.clear();
        // itemList=new List<>();
         itemList.addAll(datas);

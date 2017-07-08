@@ -1,6 +1,9 @@
 package com.example.jean.collectbeer.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,30 +13,50 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.jean.collectbeer.Beer;
-import com.example.jean.collectbeer.BeerListAdapterRecycler;
+import com.example.jean.collectbeer.Helper;
+import com.example.jean.collectbeer.recyclerview.BeerListAdapterRecycler;
 import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
 
 import java.util.ArrayList;
 
 public class MostrarActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-
+    public static final int REQUEST=900;
     private BeerListAdapterRecycler mAdapter;
-    Toolbar myToolbar;
-    CervezasDbHelper dbHelper;
+    //private FloatingActionButton fab;
+    private CervezasDbHelper dbHelper;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar);
 
-        initToolbar();
+        Helper.initToolbar(this);
         initRecycler();
-
+        Helper.initFAB(this, R.id.fab, intentNew);
     }
 
+    Runnable intentNew=new Runnable() {
+        @Override
+        public void run() {
+            Intent intent=new Intent(getApplicationContext(), NuevoActivity.class);
+            startActivityForResult(intent,REQUEST);
+        }
+    };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==REQUEST){
+            if (resultCode==RESULT_OK) {
+                Snackbar.make(getCurrentFocus(), "Guardado correctamente!", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+            }
+        }
+    }
 
     @Override
     protected void onRestart() {
@@ -43,10 +66,6 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
     }
 
 
-    private void initToolbar() {
-        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-    }
 
     private void initRecycler() {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.reciclerView);

@@ -8,4 +8,26 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 
+
+    <item android:id="@+id/action_menu1" android:alphabeticShortcut="a"
+        android:title="Ordenar por" android:orderInCategory="1">
+        <menu >
+            <group android:id="@+id/group1" android:checkableBehavior="single">
+                <item android:id="@+id/submenu1" android:title="Fecha" />
+                <item android:id="@+id/submenu2" android:title="Rating" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:id="@+id/action_menu2" android:alphabeticShortcut="b"
+        android:title="Vista" android:orderInCategory="2">
+        <menu >
+            <group android:id="@+id/group2" android:checkableBehavior="single">
+                <item android:id="@+id/submenu12" android:title="Columna" />
+                <item android:id="@+id/submenu22" android:title="Dos columnas" />
+                <item android:id="@+id/submenu23" android:title="Tres columnas" />
+            </group>
+        </menu>
+    </item>
+
 </menu>

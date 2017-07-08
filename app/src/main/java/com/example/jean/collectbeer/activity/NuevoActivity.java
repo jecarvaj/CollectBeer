@@ -18,13 +18,19 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,10 +38,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jean.collectbeer.Beer;
+import com.example.jean.collectbeer.Helper;
 import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbContract;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
@@ -51,24 +59,26 @@ import static android.Manifest.permission.CAMERA;
 public class NuevoActivity extends AppCompatActivity {
 
     //Para las fotos!
-    private static String APP_DIRECTORY="CollectBeer/";
-    private static String MEDIA_DIRECTORY=APP_DIRECTORY+"CBeerPhotos"; //LE pongo punto para no ser visible en galeria
+    //private static String APP_DIRECTORY="CollectBeer/";
+    //private static String MEDIA_DIRECTORY=APP_DIRECTORY+"CBeerPhotos"; //LE pongo punto para no ser visible en galeria
     private final int MY_PERMISSIONS=100;
     private final int PHOTO_CODE=200;
-    private final int SELECT_PICTURE=300;
-    static final int ADDED=1;
+    //private final int SELECT_PICTURE=300;
+    //static final int ADDED=1;
     private String mPath;
-    private LinearLayout layout;
+    private RelativeLayout layout;
     private EditText etNombre, etVariedad, etPais, etAlcohol, etOtro;
     private RatingBar ratingBar;
-    private Button btGuardar, btCamara;
     private ImageView imgViewBeer;
     String nombre;
     String variedad;
     String pais;
     String otro;
     String uriFoto;
-    Float calificacion, alcohol;
+    Float calificacion;
+    Float alcohol;
+    MenuItem itemCamera;
+    Boolean permisoCamera=true;
     public static final String LOGCAT="PRUEBA";
 
     @Override
@@ -76,84 +86,64 @@ public class NuevoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo);
 
+        initView();
+        Helper.initToolbar(this);
+        Helper.initFAB(this, R.id.fab_new, prepareBeer);
+        Helper.colorRatingBar(this, ratingBar);
+
+
+        //Verifico si tengo permisos de cámara y habilito o no el boton para sacar foto
+        if(checkPermisos()){
+           // Toast.makeText(NuevoActivity.this, "Camara oermiso true", Toast.LENGTH_SHORT).show();
+      //      btCamara.setEnabled(true);
+            permisoCamera=true;
+        }else{
+           // Toast.makeText(NuevoActivity.this, "camara permiso FALSEE", Toast.LENGTH_SHORT).show();
+        //    btCamara.setEnabled(false);
+            //itemCamera.setEnabled(false);
+            permisoCamera=false;
+        }
+
+    }
+
+
+
+    private void initView() {
         etNombre=(EditText)findViewById(R.id.etNombre);
         etVariedad=(EditText)findViewById(R.id.etVariedad);
         etPais=(EditText)findViewById(R.id.etPais);
         etAlcohol=(EditText)findViewById(R.id.etAlcohol);
         etOtro=(EditText)findViewById(R.id.etOtro);
         ratingBar=(RatingBar) findViewById(R.id.ratingBar);
-        btGuardar=(Button) findViewById(R.id.btGuardar);
-        btCamara=(Button) findViewById(R.id.btCamara);
-        layout=(LinearLayout) findViewById(R.id.layoutPrincipal);
+        layout=(RelativeLayout) findViewById(R.id.layoutPrincipal);
         imgViewBeer=(ImageView) findViewById(R.id.imgBeerNuevo);
-        Log.i(LOGCAT, "ON CREATE!!");
-        //Agrego esto para que no se abra el keyboard automaticamente en el scrollview!!
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
 
-
-
-        /*-------------------------------------------------------------------------------------------
-         * INICIO ARREGLO PROBLEMA DEL RATING BAR
-         * PARA PODER VER LAS ESTRELLAS EN COLORES
-         * ANDROID 5, API 21 Y 22
-         */
-        if (ratingBar.getProgressDrawable() instanceof LayerDrawable) {
-            LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-            DrawableCompat.setTint(stars.getDrawable(2), ContextCompat.getColor(this, R.color.colorAccent));
+    Runnable prepareBeer=new Runnable() {
+        @Override
+        public void run() {
+            prepareBeer();
         }
-        else {
-            // for Android 4.3, ratingBar.getProgressDrawable()=DrawableWrapperHoneycomb
-            DrawableCompat.setTint(ratingBar.getProgressDrawable(), ContextCompat.getColor(this, R.color.colorAccent));
-        }
-
-        /*
-         * FIN ARREGLO RATINGBAR
-         --------------------------------------------------------------------------------------------*/
-
-
-        //Verifico si tengo permisos de cámara y habilito o no el boton para sacar foto
-        if(mayRequestStoragePermission()){
-           // Toast.makeText(NuevoActivity.this, "Camara oermiso true", Toast.LENGTH_SHORT).show();
-            btCamara.setEnabled(true);
+    };
+    private void prepareBeer() {
+        nombre=etNombre.getText().toString();
+        variedad=etVariedad.getText().toString();
+        pais=etPais.getText().toString();
+        if(!etAlcohol.getText().toString().equals("")){
+            alcohol=Float.parseFloat(etAlcohol.getText().toString());
         }else{
-           // Toast.makeText(NuevoActivity.this, "camara permiso FALSEE", Toast.LENGTH_SHORT).show();
-            btCamara.setEnabled(false);
+            alcohol=Float.parseFloat("0.0");
         }
+        otro=etOtro.getText().toString();
+        calificacion= ratingBar.getRating();
 
-
-        //BOTON CAMARA:
-        //Al apretar boton de camara se muestran las opciones en un dialogo(tomar foto/de galeria/cancelar)
-        btCamara.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //showOptions(); //ELIMINO OPCION DE GALERIA POR AHORA
-                openCamera();
-            }
-        });
-
-
-        //BOTON GUARDAR:
-        //Toma los datos de los inputs y llama a agregarCerveza() para guardarlos en la DB
-        //mientras haya un nombre por lo menos
-        btGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nombre=etNombre.getText().toString();
-                variedad=etVariedad.getText().toString();
-                pais=etPais.getText().toString();
-                alcohol=Float.parseFloat(etAlcohol.getText().toString());
-                otro=etOtro.getText().toString();
-                calificacion= ratingBar.getRating();
-
-                if(nombre.isEmpty()){
-                    Log.i(LOGCAT, "FALTA NOMBREE");
-                    Toast.makeText(NuevoActivity.this, "Debe especificar por lo menos un nombre!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Log.i(LOGCAT, "ELSEE AGREGAR CERVEA");
-                    agregarCerveza();
-                }
-            }
-        });
+        if(nombre.isEmpty()){
+            Log.i(LOGCAT, "FALTA NOMBREE");
+            Toast.makeText(NuevoActivity.this, "Debe especificar por lo menos un nombre!", Toast.LENGTH_SHORT).show();
+        }else{
+            Log.i(LOGCAT, "ELSEE AGREGAR CERVEA");
+            addBeerDB();
+        }
     }
 
 
@@ -187,13 +177,35 @@ public class NuevoActivity extends AppCompatActivity {
     FIN ELIMINO OPCION DE CARGAR DE GALERIA POR AHORA
      ---------------------------------------------------------------------------------------------*/
 
-    private void openCamera() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, PHOTO_CODE);
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_new, menu);
+         itemCamera = menu.findItem(R.id.action_camara);
+        return true;
     }
 
-    //Para que no se pierda el nombre del path al cambiar a la camara
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        itemCamera.setEnabled(permisoCamera);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_camara:
+                Helper.openCamera(this, PHOTO_CODE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
@@ -244,32 +256,45 @@ public class NuevoActivity extends AppCompatActivity {
     }
 ------------------------------------------------------------------------------------------------------*/
 
-    private boolean mayRequestStoragePermission() {
+    private boolean checkPermisos() {
         //verificar si version es menor a 6
         if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M)
             return true;
 
         //si los permisos estan aceptados ya, retornamos true
-        if((checkSelfPermission(WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
-                && (checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED))
-            return true;
+       if(checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED)
+           return true;
 
         //Si usamos un mensaje extra
-        if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))) {
-            Snackbar.make(layout, "Permisos necesarios para usar la aplicación", Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+        if(shouldShowRequestPermissionRationale(CAMERA)) {
+            Snackbar.make(this.layout, "Permisos requeridos", Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
-                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                    requestPermissions(new String[]{CAMERA}, MY_PERMISSIONS);
                 }
             }).show();
         }else{
-            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+            requestPermissions(new String[]{CAMERA}, MY_PERMISSIONS);
         }
         return false;
     }
 
-    private void agregarCerveza() {
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==MY_PERMISSIONS){
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permisos aceptados", Toast.LENGTH_SHORT).show();
+                // btCamara.setEnabled(true);
+                itemCamera.setEnabled(true);
+            }
+        }
+    }
+
+
+    private void addBeerDB() {
         Beer cerveza=new Beer(nombre,variedad,pais,otro,imageViewToByte(imgViewBeer),calificacion,alcohol);
         CervezasDbHelper dbHelper =CervezasDbHelper.getInstance(getApplicationContext());
 
@@ -284,20 +309,8 @@ public class NuevoActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==MY_PERMISSIONS){
-            if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED
-                    && grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Permisos aceptados", Toast.LENGTH_SHORT).show();
-                btCamara.setEnabled(true);
-            }
-        }else{
-            explicar();
-        }
-    }
 
+/*
     private void explicar() {
         AlertDialog.Builder builder=new AlertDialog.Builder(NuevoActivity.this);
         builder.setTitle("Permisos denegados");
@@ -320,7 +333,8 @@ public class NuevoActivity extends AppCompatActivity {
            //     finish();
             }
         });
-    }
+        builder.show();
+    }*/
 
     public static byte[] imageViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();

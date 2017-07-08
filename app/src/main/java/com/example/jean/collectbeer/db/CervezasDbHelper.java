@@ -123,7 +123,11 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
                 beer.setFecha(Timestamp.valueOf(cursor.getString(2)));
                 beer.setVariedad(cursor.getString(3));
                 beer.setUriFoto(cursor.getBlob(4));
-                beer.setAlcohol(Float.parseFloat(cursor.getString(5)));
+                if(cursor.getString(5).equals("")){
+                    beer.setAlcohol(Float.parseFloat("0.0"));
+                }else{
+                    beer.setAlcohol(Float.parseFloat(cursor.getString(5)));
+                }
                 beer.setCalificacion(Float.parseFloat(cursor.getString(6)));
                 beer.setOtro(cursor.getString(7));
                 beer.setPais(cursor.getString(8));

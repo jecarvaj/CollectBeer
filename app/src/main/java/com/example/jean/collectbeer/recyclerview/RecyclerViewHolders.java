@@ -1,4 +1,4 @@
-package com.example.jean.collectbeer;
+package com.example.jean.collectbeer.recyclerview;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jean.collectbeer.Beer;
+import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.activity.DetalleActivity;
 import com.example.jean.collectbeer.activity.MostrarActivity;
 
@@ -34,8 +36,8 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
         super(itemView);
         itemView.setOnClickListener(this);
         tvNombre=(TextView) itemView.findViewById(R.id.tvNombre);
-        tvVariedad=(TextView) itemView.findViewById(R.id.tvVariedad);
-        tvPais=(TextView) itemView.findViewById(R.id.tvPais);
+       // tvVariedad=(TextView) itemView.findViewById(R.id.tvVariedad);
+        //tvPais=(TextView) itemView.findViewById(R.id.tvPais);
         ratingBar=(RatingBar) itemView.findViewById(R.id.ratingBarItem);
         imageView=(ImageView) itemView.findViewById(R.id.imgBeer);
 
@@ -52,8 +54,8 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
 
     void bind (Beer item) {  //<--bind method allows the ViewHolder to bind to the data it is displaying
         tvNombre.setText(item.getNombre());
-        tvVariedad.setText(item.getVariedad()+" "+String.valueOf(item.getAlcohol())+"°");
-        tvPais.setText(item.getPais());
+       // tvVariedad.setText(item.getVariedad()+" "+String.valueOf(item.getAlcohol())+"°");
+        //tvPais.setText(item.getPais());
         ratingBar.setRating(item.getCalificacion());
 
         byte[] imgBeer = item.getUriFoto();

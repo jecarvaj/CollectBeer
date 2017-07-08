@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutPrincipal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutPrincipal"
     xmlns:tools="http://schemas.android.com/tools"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     style="@style/layouts"
-    tools:context="com.example.jean.collectbeer.activity.NuevoActivity"
-    >
+    tools:context="com.example.jean.collectbeer.activity.NuevoActivity">
+    <include layout="@layout/toolbar" android:id="@+id/my_toolbar"/>
     <ScrollView
+        android:layout_below="@id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -14,35 +17,20 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="-10dp">
 
             <ImageView
                 android:id="@+id/imgBeerNuevo"
-                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
                 android:layout_width="100dp"
                 android:layout_height="130dp"
+                android:layout_marginBottom="-16dp"
                 android:src="@drawable/imgnuevo260x347"/>
-
-            <Button
-                android:id="@+id/btCamara"
-                android:layout_width="70dp"
-                android:layout_height="60dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/ic_add_a_photo_white_48dp"
-                />
-        </RelativeLayout>
-
-
-
 
         <TextView
             android:text="@string/nombre"
-            style="@style/textViewNuevo" />
+            style="@style/tvDetalle" />
 
             <EditText
                 android:id="@+id/etNombre"
@@ -56,7 +44,7 @@
 
         <TextView
             android:text="@string/variedad"
-            style="@style/textViewNuevo" />
+            style="@style/tvDetalle" />
         <EditText
             android:id="@+id/etVariedad"
             android:hint="@string/variedadEj"
@@ -66,7 +54,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -78,7 +66,7 @@
                 <TextView
                     android:id="@+id/textViewPais"
                     android:text="@string/pais"
-                    style="@style/textViewNuevo" />
+                    style="@style/tvDetalle" />
                 <EditText
                     android:layout_below="@id/textViewPais"
                     android:id="@+id/etPais"
@@ -96,7 +84,7 @@
                 <TextView
                     android:id="@+id/textViewAlcohol"
                     android:text="@string/alcohol"
-                    style="@style/textViewNuevo"
+                    style="@style/tvDetalle"
                     android:layout_width="wrap_content"
                     android:layout_centerHorizontal="false"/>
                 <EditText
@@ -104,6 +92,7 @@
                     android:inputType="numberDecimal"
                     android:layout_marginStart="10dp"
                     android:hint="@string/alcoholEj"
+
                     style="@style/editTextNuevo"
                     android:layout_width="match_parent"
                     android:layout_below="@+id/textViewAlcohol"
@@ -116,7 +105,7 @@
 
         <TextView
             android:text="@string/otro"
-            style="@style/textViewNuevo" />
+            style="@style/tvDetalle" />
         <EditText
             android:id="@+id/etOtro"
             android:hint="@string/otroEj"
@@ -138,45 +127,22 @@
             android:stepSize="0.5"
             />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </LinearLayout>
-
-
-
-        <Button
-            android:id="@+id/btGuardar"
-            android:layout_gravity="center"
-            style="@style/boton"
-            android:text="Guardar"
-        />
-
 
     </LinearLayout>
     </ScrollView>
 
-    <!--<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_new"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        app:fabSize="normal"
+        app:elevation="16dp"
+        app:borderWidth="0dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_save_white_48dp" />
 
 
-    </RelativeLayout>
 
-    <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="1dp"
-            android:numStars="5"
-            android:rating="5"
-            android:stepSize="0.5"
-            />
-
-
--->
-
-</LinearLayout>
+</RelativeLayout>
