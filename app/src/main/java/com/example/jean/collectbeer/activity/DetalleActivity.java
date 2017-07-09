@@ -44,26 +44,8 @@ public class DetalleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalle2);
         Helper.initToolbar(this);
         init();
+        Helper.colorRatingBar(this, ratinBar);
 
-
-
-         /*-------------------------------------------------------------------------------------------
-         * INICIO ARREGLO PROBLEMA DEL RATING BAR
-         * PARA PODER VER LAS ESTRELLAS EN COLORES
-         * ANDROID 5, API 21 Y 22
-         */
-        if (ratinBar.getProgressDrawable() instanceof LayerDrawable) {
-            LayerDrawable stars = (LayerDrawable) ratinBar.getProgressDrawable();
-            DrawableCompat.setTint(stars.getDrawable(2), ContextCompat.getColor(this, R.color.colorAccent));
-        }
-        else {
-            // for Android 4.3, ratingBar.getProgressDrawable()=DrawableWrapperHoneycomb
-            DrawableCompat.setTint(ratinBar.getProgressDrawable(), ContextCompat.getColor(this, R.color.colorAccent));
-        }
-
-        /*
-         * FIN ARREGLO RATINGBAR
-         --------------------------------------------------------------------------------------------*/
 
         imagen=(ImageView) findViewById(R.id.imageViewDetalle);
 

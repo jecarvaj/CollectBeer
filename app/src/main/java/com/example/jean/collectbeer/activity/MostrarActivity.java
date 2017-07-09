@@ -27,8 +27,12 @@ import java.util.ArrayList;
 public class MostrarActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     public static final int REQUEST=900;
     private BeerListAdapterRecycler mAdapter;
-    //private FloatingActionButton fab;
     private CervezasDbHelper dbHelper;
+    public static int NUM_ROW=2;
+    public static int LAYOUT_ITEM=R.layout.beer_item_grid;
+    MenuItem itemRow1;//=menu.findItem(R.id.action_row_1);
+    MenuItem itemRow2;//=menu.findItem(R.id.action_row_2);
+    MenuItem itemRow3, itemSettings, itemView, itemFilter;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
         setContentView(R.layout.activity_mostrar);
 
         Helper.initToolbar(this);
-        initRecycler();
+        initRecycler(NUM_ROW);
         Helper.initFAB(this, R.id.fab, intentNew);
     }
 
@@ -67,15 +71,22 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
 
 
 
-    private void initRecycler() {
+    private void initRecycler(int num_rows) {
+       int card_view=R.id.card_view;
+        LAYOUT_ITEM=R.layout.beer_item_grid;
+        if(num_rows==1){
+            card_view=R.id.card_view_list;
+            LAYOUT_ITEM=R.layout.beer_item_list;
+        }
+
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.reciclerView);
         mRecyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, num_rows);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
-        mAdapter = new BeerListAdapterRecycler(this, R.id.card_view, dbHelper.getAllData());
+        mAdapter = new BeerListAdapterRecycler(this, card_view, dbHelper.getAllData());
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -83,11 +94,19 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        final MenuItem item = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        final MenuItem itemSearch = menu.findItem(R.id.action_search);
+        itemRow1=menu.findItem(R.id.action_row_1);
+        itemRow2=menu.findItem(R.id.action_row_2);
+        itemRow3=menu.findItem(R.id.action_row_3);
+        itemSettings=menu.findItem(R.id.action_settings);
+        //itemView=menu.findItem(R.id.action_view);
+        //itemFilter=menu.findItem(R.id.action_filter);
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(itemSearch);
         searchView.setOnQueryTextListener(this);
 
-        MenuItemCompat.setOnActionExpandListener(item,
+
+        MenuItemCompat.setOnActionExpandListener(itemSearch,
                 new MenuItemCompat.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
@@ -112,9 +131,42 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
         switch (id) {
             case R.id.action_search:
                 return true;
+           case R.id.action_row_1:
+                setRow(1);
+                return true;
+            case R.id.action_row_2:
+                setRow(2);
+                return true;
+            case R.id.action_row_3:
+                setRow(3);
+                return true;
+            case R.id.action_settings:
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setRow(int i) {
+        Toast.makeText(this, i+" columna", Toast.LENGTH_SHORT).show();
+        switch (i){
+            case 1:
+                itemRow1.setChecked(true);
+                itemRow2.setChecked(false);
+                itemRow3.setChecked(false);
+                break;
+            case 2:
+                itemRow1.setChecked(false);
+                itemRow2.setChecked(true);
+                itemRow3.setChecked(false);
+                break;
+            case 3:
+                itemRow1.setChecked(false);
+                itemRow2.setChecked(false);
+                itemRow3.setChecked(true);
+                break;
+        }
+        initRecycler(i);
     }
 
     @Override

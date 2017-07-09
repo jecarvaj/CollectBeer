@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view_list"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    card_view:contentPadding="2dp"
+    card_view:cardBackgroundColor="@color/cardview_shadow_start_color"
+    card_view:cardMaxElevation="4dp"
+    card_view:cardElevation="3dp"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/secondary_text"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgBeer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/ic_launcher"
+            />
+
+        <LinearLayout
+            android:padding="6dp"
+            android:layout_gravity="start"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/ratingBarItem"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:layout_marginBottom="20dp"
+                android:numStars="5" />
+            <LinearLayout
+                style="@style/layoutItem"
+                >
+                <TextView
+                    android:id="@+id/tvNombre"
+                    style="@style/tv_item"
+                    android:textSize="16sp"
+                    android:paddingBottom="6dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/layoutItem"
+                >
+                <TextView
+                    android:id="@+id/tvVariedad"
+                    style="@style/tv_item"
+                    android:paddingBottom="6dp"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/layoutItem"
+                >
+                <TextView
+                    android:id="@+id/tvPais"
+                    style="@style/tv_item"
+                    android:paddingBottom="6dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="8dp"
+        >
+        <TextView
+            android:id="@+id/tvFecha"
+            style="@style/tv_item"
+            android:textAlignment="textEnd"
+            />
+    </RelativeLayout>
+
+
+
+</android.support.v7.widget.CardView>

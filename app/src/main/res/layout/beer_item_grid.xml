@@ -5,7 +5,7 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    card_view:contentPadding="2dp"
+    card_view:contentPadding="1dp"
     card_view:cardBackgroundColor="@color/cardview_shadow_end_color"
     card_view:cardMaxElevation="4dp"
     card_view:cardElevation="2dp"
@@ -43,7 +43,7 @@
                 android:id="@+id/tvNombre"
                 style="@style/tv_item"
                 android:textAlignment="center"
-                android:layout_weight="0.3"
+                android:paddingBottom="6dp"
                 />
         </LinearLayout>
 

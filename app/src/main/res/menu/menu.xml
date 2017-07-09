@@ -8,9 +8,44 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 
+  <!--  <item android:id="@+id/action_settings"
+        app:showAsAction="never"
 
-    <item android:id="@+id/action_menu1" android:alphabeticShortcut="a"
-        android:title="Ordenar por" android:orderInCategory="1">
+        android:title="Settings"></item>
+
+    <item android:id="@+id/action_view"
+        android:icon="@drawable/ic_visibility_white_36dp"
+        app:showAsAction="always"
+        android:visible="false"
+        android:title="Vista">
+        <menu >
+            <group android:id="@+id/group2" android:checkableBehavior="single">
+                <item android:id="@+id/action_row_1"
+                    android:title="Columna"
+                    android:checkable="true"/>
+                <item android:id="@+id/action_row_2"
+                    android:title="Dos columnas"
+                    android:checkable="true"
+                    android:checked="true"/>
+                <item android:id="@+id/action_row_3"
+                    android:title="Tres columnas"
+                    android:checkable="true"/>
+            </group>
+        </menu>
+
+    </item>
+
+    <item android:id="@+id/action_filter"
+        android:icon="@drawable/filter_outline"
+        android:title="Hoola" app:showAsAction="always"
+        android:visible="false">
+    </item>-->
+
+
+    <item android:id="@+id/action_menu1"
+        android:alphabeticShortcut="b"
+        android:title="Ordenar por"
+        android:orderInCategory="2">
         <menu >
             <group android:id="@+id/group1" android:checkableBehavior="single">
                 <item android:id="@+id/submenu1" android:title="Fecha" />
@@ -19,13 +54,23 @@
         </menu>
     </item>
 
-    <item android:id="@+id/action_menu2" android:alphabeticShortcut="b"
-        android:title="Vista" android:orderInCategory="2">
+    <item android:id="@+id/action_rows"
+        android:alphabeticShortcut="a"
+        android:title="Vista"
+        android:icon="@drawable/ic_visibility_white_36dp"
+        android:orderInCategory="1">
         <menu >
             <group android:id="@+id/group2" android:checkableBehavior="single">
-                <item android:id="@+id/submenu12" android:title="Columna" />
-                <item android:id="@+id/submenu22" android:title="Dos columnas" />
-                <item android:id="@+id/submenu23" android:title="Tres columnas" />
+                <item android:id="@+id/action_row_1"
+                    android:title="Columna"
+                    android:checkable="true"/>
+                <item android:id="@+id/action_row_2"
+                    android:title="Dos columnas"
+                    android:checkable="true"
+                    android:checked="true"/>
+                <item android:id="@+id/action_row_3"
+                    android:title="Tres columnas"
+                    android:checkable="true"/>
             </group>
         </menu>
     </item>

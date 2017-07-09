@@ -2,13 +2,13 @@ package com.example.jean.collectbeer.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jean.collectbeer.Beer;
 import com.example.jean.collectbeer.R;
+import com.example.jean.collectbeer.activity.MostrarActivity;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class BeerListAdapterRecycler extends RecyclerView.Adapter<RecyclerViewHo
 
     @Override
     public RecyclerViewHolders onCreateViewHolder(ViewGroup parent, int viewType){
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.beer_item2, parent, false);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(MostrarActivity.LAYOUT_ITEM, parent, false);
         RecyclerViewHolders rcv = new RecyclerViewHolders(layoutView);
         return rcv;
     }
