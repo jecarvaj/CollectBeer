@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.LayerDrawable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class DetalleActivity extends AppCompatActivity {
+    public static final int REQUEST_REMOVED=100;
      ImageView imagen;
      EditText nombre, variedad, pais, otro, alcohol;
      RatingBar ratinBar;
@@ -89,11 +92,40 @@ public class DetalleActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_delete:
-                Toast.makeText(this, "CAMARA", Toast.LENGTH_SHORT).show();
+                removeBeer(beerOld.getId());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void removeBeer(final int id) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+       // builder.setTitle("");
+        builder.setMessage("¿Seguro que desea eliminar?");
+        builder.setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                CervezasDbHelper db=CervezasDbHelper.getInstance(getApplicationContext());
+                if(db.delete(id)>0){
+                    finish();
+                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+                    Toast.makeText(getApplicationContext(), "Eliminado correctamente!", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //     finish();
+            }
+        });
+        builder.show();
+
     }
 
     private void init() {

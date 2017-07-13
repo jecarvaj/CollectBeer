@@ -1,9 +1,11 @@
 package com.example.jean.collectbeer.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,10 +31,10 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
     private BeerListAdapterRecycler mAdapter;
     private CervezasDbHelper dbHelper;
     public static int NUM_ROW=2;
+    public static String SORT_OPTION="date";
     public static int LAYOUT_ITEM=R.layout.beer_item_grid;
-    MenuItem itemRow1;//=menu.findItem(R.id.action_row_1);
-    MenuItem itemRow2;//=menu.findItem(R.id.action_row_2);
-    MenuItem itemRow3, itemSettings, itemView, itemFilter;
+    MenuItem itemRow1, itemRow2, itemRow3, itemDate, itemName, itemRating;
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
         setContentView(R.layout.activity_mostrar);
 
         Helper.initToolbar(this);
-        initRecycler(NUM_ROW);
+        initRecycler();
         Helper.initFAB(this, R.id.fab, intentNew);
     }
 
@@ -56,8 +58,7 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==REQUEST){
             if (resultCode==RESULT_OK) {
-                Snackbar.make(getCurrentFocus(), "Guardado correctamente!", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+               Snackbar.make(getCurrentFocus(), "Guardado correctamente!", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         }
     }
@@ -71,10 +72,10 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
 
 
 
-    private void initRecycler(int num_rows) {
+    private void initRecycler() {
        int card_view=R.id.card_view;
         LAYOUT_ITEM=R.layout.beer_item_grid;
-        if(num_rows==1){
+        if(NUM_ROW==1){
             card_view=R.id.card_view_list;
             LAYOUT_ITEM=R.layout.beer_item_list;
         }
@@ -82,7 +83,7 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.reciclerView);
         mRecyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, num_rows);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, NUM_ROW);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
@@ -98,9 +99,9 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
         itemRow1=menu.findItem(R.id.action_row_1);
         itemRow2=menu.findItem(R.id.action_row_2);
         itemRow3=menu.findItem(R.id.action_row_3);
-        itemSettings=menu.findItem(R.id.action_settings);
-        //itemView=menu.findItem(R.id.action_view);
-        //itemFilter=menu.findItem(R.id.action_filter);
+        itemDate=menu.findItem(R.id.action_sortDate);
+        itemName=menu.findItem(R.id.action_sortName);
+        itemRating=menu.findItem(R.id.action_sortRating);
 
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(itemSearch);
         searchView.setOnQueryTextListener(this);
@@ -140,15 +141,44 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
             case R.id.action_row_3:
                 setRow(3);
                 return true;
-            case R.id.action_settings:
+            case R.id.action_sortDate:
+                setSort("date");
+                return true;
+            case R.id.action_sortName:
+                setSort("name");
+                return true;
+            case R.id.action_sortRating:
+                setSort("rating");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void setSort(String option) {
+        switch (option){
+            case "date":
+                itemDate.setChecked(true);
+                itemName.setChecked(false);
+                itemRating.setChecked(false);
+                break;
+            case "name":
+                itemDate.setChecked(false);
+                itemName.setChecked(true);
+                itemRating.setChecked(false);
+                break;
+            case "rating":
+                itemDate.setChecked(false);
+                itemName.setChecked(false);
+                itemRating.setChecked(true);
+                break;
+        }
+        SORT_OPTION=option;
+        initRecycler();
+
+    }
+
     private void setRow(int i) {
-        Toast.makeText(this, i+" columna", Toast.LENGTH_SHORT).show();
         switch (i){
             case 1:
                 itemRow1.setChecked(true);
@@ -166,7 +196,8 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
                 itemRow3.setChecked(true);
                 break;
         }
-        initRecycler(i);
+        NUM_ROW=i;
+        initRecycler();
     }
 
     @Override

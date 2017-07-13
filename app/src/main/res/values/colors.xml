@@ -16,8 +16,8 @@
     <color name="primary_light">#2e3d44</color>
     <color name="accent">#804217</color>
    <!-- <color name="accent">#01bfa5</color>-->
-    <color name="primary_text">#2f302e</color>
-    <color name="secondary_text">#011216</color>
+    <color name="primary_text">#151514</color>
+    <color name="secondary_text">#ffffff</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="card">#36474f</color>

@@ -48,8 +48,16 @@
         android:orderInCategory="2">
         <menu >
             <group android:id="@+id/group1" android:checkableBehavior="single">
-                <item android:id="@+id/submenu1" android:title="Fecha" />
-                <item android:id="@+id/submenu2" android:title="Rating" />
+                <item android:id="@+id/action_sortName"
+                    android:title="Nombre"
+                    android:checkable="true"/>
+                <item android:id="@+id/action_sortDate"
+                    android:title="Fecha"
+                    android:checkable="true"
+                    android:checked="true"/>
+                <item android:id="@+id/action_sortRating"
+                    android:title="Rating"
+                    android:checkable="true"/>
             </group>
         </menu>
     </item>

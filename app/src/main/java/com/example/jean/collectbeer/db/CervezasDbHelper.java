@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.jean.collectbeer.Beer;
+import com.example.jean.collectbeer.activity.MostrarActivity;
 import com.example.jean.collectbeer.db.CervezasDbContract;
 
 import java.sql.Timestamp;
@@ -108,13 +109,35 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
 
     public ArrayList<Beer> getAllData() {
         ArrayList<Beer> beerList = new ArrayList<Beer>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + CervezasDbContract.Cervezas.TABLE_NAME;
-
+        String sortOrder;
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
+        switch (MostrarActivity.SORT_OPTION){
+            case "date":
+                sortOrder=CervezasDbContract.Cervezas.COLUMN_NAME_FECHA+" DESC";
+                break;
+            case "name":
+                sortOrder=CervezasDbContract.Cervezas.COLUMN_NAME_NOMBRE+" ASC";
+                break;
+            case "rating":
+                sortOrder=CervezasDbContract.Cervezas.COLUMN_NAME_CALIFICACION+" DESC";
+                break;
+            default:
+                sortOrder=null;
+                break;
+        }
+
+
+        Cursor cursor = db.query(
+                CervezasDbContract.Cervezas.TABLE_NAME,                     // The table to query
+                null,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
         if (cursor.moveToFirst()) {
             do {
                 Beer beer = new Beer();
@@ -132,15 +155,13 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
                 beer.setOtro(cursor.getString(7));
                 beer.setPais(cursor.getString(8));
 
-                // Adding contact to list
                 beerList.add(beer);
             } while (cursor.moveToNext());
         }
-
-        // return contact list
         cursor.close();
         return beerList;
     }
+
 
     public long update(Beer beer, int id){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -156,5 +177,12 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
         valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_FOTO, beer.getUriFoto());
         valores.put(CervezasDbContract.Cervezas.COLUMN_NAME_CALIFICACION, beer.getCalificacion());
         return db.update(CervezasDbContract.Cervezas.TABLE_NAME, valores, CervezasDbContract.Cervezas._ID+"="+String.valueOf(id),null);
+    }
+
+    public long delete(int id){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String selection = CervezasDbContract.Cervezas._ID+ " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+       return db.delete(CervezasDbContract.Cervezas.TABLE_NAME, selection, selectionArgs);
     }
 }
