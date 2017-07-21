@@ -152,7 +152,8 @@
                 android:layout_gravity="center"
                 android:layout_width="190dp"
                 android:layout_height="253dp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/imgnuevo260x347"/>
         </LinearLayout>
     </ScrollView>
 

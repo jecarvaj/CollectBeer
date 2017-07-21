@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#080808</color>
-    <color name="colorPrimaryDark">#3b3b3b</color>
     <color name="colorAccent">#bc941b</color>
-    <color name="colorAccent_shadow">#1abc941b</color>
     <color name="shadow_lighter_color">#64fdfcfc</color>
     <color name="shadow_item_color">#b2000000</color>
     <color name="hintNuevo">#494848</color>
-    <color name="textNuevo">#804217</color>
-    <color name="borde">#3e3a1b</color>
 
 
     <color name="primary_dark">#273238</color>
     <color name="primary">#2a373f</color>
-    <color name="primary_light">#2e3d44</color>
     <color name="accent">#804217</color>
    <!-- <color name="accent">#01bfa5</color>-->
     <color name="primary_text">#151514</color>
     <color name="secondary_text">#ffffff</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#BDBDBD</color>
     <color name="card">#36474f</color>
 
 

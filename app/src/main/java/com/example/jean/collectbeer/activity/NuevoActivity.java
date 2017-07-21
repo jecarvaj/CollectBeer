@@ -1,70 +1,44 @@
 package com.example.jean.collectbeer.activity;
 
-import android.content.ContentValues;
-import android.content.DialogInterface;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.os.PersistableBundle;
-import android.provider.MediaStore;
-import android.provider.Settings;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jean.collectbeer.Beer;
 import com.example.jean.collectbeer.Helper;
 import com.example.jean.collectbeer.R;
-import com.example.jean.collectbeer.db.CervezasDbContract;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Random;
+import java.io.IOException;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
 
 public class NuevoActivity extends AppCompatActivity {
 
     //Para las fotos!
-    //private static String APP_DIRECTORY="CollectBeer/";
-    //private static String MEDIA_DIRECTORY=APP_DIRECTORY+"CBeerPhotos"; //LE pongo punto para no ser visible en galeria
+    private static String APP_DIRECTORY="CollectBeer3";
     private final int MY_PERMISSIONS=100;
     private final int PHOTO_CODE=200;
-    //private final int SELECT_PICTURE=300;
-    //static final int ADDED=1;
     private String mPath;
     private RelativeLayout layout;
     private EditText etNombre, etVariedad, etPais, etAlcohol, etOtro;
@@ -74,33 +48,27 @@ public class NuevoActivity extends AppCompatActivity {
     String variedad;
     String pais;
     String otro;
-    String uriFoto;
+    String uriFoto=null;
     Float calificacion;
     Float alcohol;
     MenuItem itemCamera;
     Boolean permisoCamera=true;
+    Bitmap resized;
     public static final String LOGCAT="PRUEBA";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo);
-
         initView();
         Helper.initToolbar(this);
         Helper.initFAB(this, R.id.fab_new, prepareBeer);
         Helper.colorRatingBar(this, ratingBar);
 
-
         //Verifico si tengo permisos de cámara y habilito o no el boton para sacar foto
         if(checkPermisos()){
-           // Toast.makeText(NuevoActivity.this, "Camara oermiso true", Toast.LENGTH_SHORT).show();
-      //      btCamara.setEnabled(true);
             permisoCamera=true;
         }else{
-           // Toast.makeText(NuevoActivity.this, "camara permiso FALSEE", Toast.LENGTH_SHORT).show();
-        //    btCamara.setEnabled(false);
-            //itemCamera.setEnabled(false);
             permisoCamera=false;
         }
 
@@ -129,6 +97,7 @@ public class NuevoActivity extends AppCompatActivity {
         nombre=etNombre.getText().toString();
         variedad=etVariedad.getText().toString();
         pais=etPais.getText().toString();
+
         if(!etAlcohol.getText().toString().equals("")){
             alcohol=Float.parseFloat(etAlcohol.getText().toString());
         }else{
@@ -195,7 +164,6 @@ public class NuevoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case R.id.action_camara:
                 Helper.openCamera(this, PHOTO_CODE);
@@ -207,18 +175,6 @@ public class NuevoActivity extends AppCompatActivity {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        outState.putString("file_path", mPath);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mPath=savedInstanceState.getString("file_path");
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK){
@@ -226,14 +182,9 @@ public class NuevoActivity extends AppCompatActivity {
                 case PHOTO_CODE:
                     if(data.getExtras().get("data")!=null){
                         Bitmap photo = (Bitmap) data.getExtras().get("data");
-                        //Bitmap resized = Bitmap.createScaledBitmap(photo, 480, 640, true);
-                        Bitmap resized = Bitmap.createScaledBitmap(photo, 260, 347, true);
+                        resized = Bitmap.createScaledBitmap(photo, 260, 347, true);
                         imgViewBeer.setImageBitmap(resized);
-                        Toast.makeText(this, "SI HAY HAY FOTO >"+data.getExtras().get("data").toString(), Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(this, "NO HAY FOTO >"+data.getExtras().get("data").toString(), Toast.LENGTH_SHORT).show();
                     }
-
                     break;
                /**
                 * ELIMINO GALERIA POR AHORA
@@ -295,7 +246,12 @@ public class NuevoActivity extends AppCompatActivity {
 
 
     private void addBeerDB() {
-        Beer cerveza=new Beer(nombre,variedad,pais,otro,imageViewToByte(imgViewBeer),calificacion,alcohol);
+        if(resized!=null){
+            savePhoto(resized);
+        }else{
+            uriFoto=null;
+        }
+        Beer cerveza=new Beer(nombre,variedad,pais,otro,uriFoto,calificacion,alcohol);
         CervezasDbHelper dbHelper =CervezasDbHelper.getInstance(getApplicationContext());
 
         long insertado=dbHelper.addBeer(cerveza);
@@ -309,38 +265,36 @@ public class NuevoActivity extends AppCompatActivity {
         }
     }
 
+    private void savePhoto(Bitmap resized) {
+        File pictureFile = getOutputMediaFile();
+        uriFoto=pictureFile.toURI().toString();
 
-/*
-    private void explicar() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(NuevoActivity.this);
-        builder.setTitle("Permisos denegados");
-        builder.setMessage("Debe aceptar los permisos para tomar fotos!");
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent=new Intent();
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri=Uri.fromParts("package", getPackageName(), null);
-                intent.setData(uri);
-                startActivity(intent);
-            }
-        });
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            resized.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d("STORAGE", "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d("STORAGE", "Error accessing file: " + e.getMessage());
+        }
 
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-           //     finish();
-            }
-        });
-        builder.show();
-    }*/
-
-    public static byte[] imageViewToByte(ImageView image) {
-        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
     }
+
+    private  File getOutputMediaFile() {
+        ContextWrapper cw=new ContextWrapper(getApplicationContext());
+        File file=cw.getDir(APP_DIRECTORY, Context.MODE_PRIVATE);
+        boolean isDirectoryCreated = file.exists(); //Si el directorio está creado o no
+        if (!isDirectoryCreated)
+            isDirectoryCreated = file.mkdirs(); //Si el directorio no está creado, lo creamos
+
+        File newFile = null;
+        if (isDirectoryCreated) {
+            Long timestamp = System.currentTimeMillis() / 1000; //para nombre unico
+            String imageName = nombre+"_" + timestamp.toString() + ".jpg"; //nombre de imagen
+            newFile = new File(file,imageName);
+        }
+        return newFile;
+    }
+
 }

@@ -1,28 +1,22 @@
 package com.example.jean.collectbeer.activity;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.jean.collectbeer.Beer;
 import com.example.jean.collectbeer.Helper;
-import com.example.jean.collectbeer.recyclerview.BeerListAdapterRecycler;
 import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
+import com.example.jean.collectbeer.recyclerview.BeerListAdapterRecycler;
 
 import java.util.ArrayList;
 
@@ -30,20 +24,44 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
     public static final int REQUEST=900;
     private BeerListAdapterRecycler mAdapter;
     private CervezasDbHelper dbHelper;
-    public static int NUM_ROW=2;
-    public static String SORT_OPTION="date";
     public static int LAYOUT_ITEM=R.layout.beer_item_grid;
     MenuItem itemRow1, itemRow2, itemRow3, itemDate, itemName, itemRating;
+    public SharedPreferences pref;
+    public static int NUM_ROW;
+    public static String SORT_OPTION;
 
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar);
-
+        getCache();
         Helper.initToolbar(this);
-        initRecycler();
         Helper.initFAB(this, R.id.fab, intentNew);
+        initRecycler();
+    }
+
+    private void initCache(String sort, int row) {
+        SharedPreferences.Editor editor=pref.edit();
+        editor.putString("sort", sort);
+        editor.putInt("rows", row);
+        editor.apply();
+        NUM_ROW=row;
+        SORT_OPTION=sort;
+    }
+
+    private void getCache(){
+        pref = getApplicationContext().getSharedPreferences("OPTIONS", MODE_PRIVATE);
+        String sortCache = pref.getString("sort", null);
+        int rowsCache=pref.getInt("rows", 0);
+
+        if (sortCache == null || rowsCache==0) {
+            initCache("date", 2); //default
+        }else{
+            NUM_ROW=rowsCache;
+            SORT_OPTION=sortCache;
+            initCache(SORT_OPTION, NUM_ROW);
+        }
     }
 
     Runnable intentNew=new Runnable() {
@@ -66,18 +84,18 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i("DATABASE1", "MOSTRAR ACTICITY");
         mAdapter.update(dbHelper.getAllData());
     }
 
 
 
     private void initRecycler() {
-       int card_view=R.id.card_view;
+        int card_view = R.id.card_view;
         LAYOUT_ITEM=R.layout.beer_item_grid;
+
         if(NUM_ROW==1){
-            card_view=R.id.card_view_list;
-            LAYOUT_ITEM=R.layout.beer_item_list;
+            card_view = R.id.card_view_list;
+            LAYOUT_ITEM = R.layout.beer_item_list;
         }
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.reciclerView);
@@ -102,23 +120,21 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
         itemDate=menu.findItem(R.id.action_sortDate);
         itemName=menu.findItem(R.id.action_sortName);
         itemRating=menu.findItem(R.id.action_sortRating);
-
+        setSort(SORT_OPTION);
+        setRow(NUM_ROW);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(itemSearch);
         searchView.setOnQueryTextListener(this);
-
 
         MenuItemCompat.setOnActionExpandListener(itemSearch,
                 new MenuItemCompat.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
-                        Log.i("TOOLBAR","----------COLLAPSED");
                        mAdapter.setFilter(dbHelper.getAllData());
                         return true;
                     }
 
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
-                        Log.i("TOOLBAR","----------EXPANDEEEDD");
                         return true;
                     }
                 });
@@ -173,9 +189,8 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
                 itemRating.setChecked(true);
                 break;
         }
-        SORT_OPTION=option;
+        initCache(option, NUM_ROW);
         initRecycler();
-
     }
 
     private void setRow(int i) {
@@ -196,7 +211,7 @@ public class MostrarActivity extends AppCompatActivity implements SearchView.OnQ
                 itemRow3.setChecked(true);
                 break;
         }
-        NUM_ROW=i;
+        initCache(SORT_OPTION, i);
         initRecycler();
     }
 

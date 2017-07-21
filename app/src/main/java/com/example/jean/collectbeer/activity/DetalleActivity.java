@@ -1,26 +1,16 @@
 package com.example.jean.collectbeer.activity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.LayerDrawable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jean.collectbeer.Beer;
@@ -28,19 +18,16 @@ import com.example.jean.collectbeer.Helper;
 import com.example.jean.collectbeer.R;
 import com.example.jean.collectbeer.db.CervezasDbHelper;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.io.File;
 
 public class DetalleActivity extends AppCompatActivity {
-    public static final int REQUEST_REMOVED=100;
-     ImageView imagen;
-     EditText nombre, variedad, pais, otro, alcohol;
-     RatingBar ratinBar;
+    ImageView imagen;
+    EditText nombre, variedad, pais, otro, alcohol;
+    RatingBar ratinBar;
     String oldNombre, oldVariedad, oldPais, oldOtro;
     Float oldRatinBar, oldAlcohol;
     Beer beerOld, beerNew;
-    byte[] imgBeer;
-    int id;
+    Uri imgBeer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,18 +36,15 @@ public class DetalleActivity extends AppCompatActivity {
         init();
         Helper.colorRatingBar(this, ratinBar);
 
-
         imagen=(ImageView) findViewById(R.id.imageViewDetalle);
-
-      // id=getIntent().getExtras().getInt("id");
-        //CervezasDbHelper dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
-      //beerOld=dbHelper.getBeer(id);
-        //ArrayList<Beer> myDataset = dbHelper.getAllData();
         beerOld=(Beer) getIntent().getExtras().getSerializable("currentBeer");
-        imgBeer = beerOld.getUriFoto();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imgBeer, 0, imgBeer.length);
 
-        imagen.setImageBitmap(bitmap);
+        //si beer tiene una imagen asociado la muestro en el activity
+        if(beerOld.getUriFoto()!=null){
+            imgBeer = Uri.parse(beerOld.getUriFoto());
+            imagen.setImageURI(imgBeer);
+        }
+
         nombre.setText(beerOld.getNombre());
         variedad.setText(beerOld.getVariedad());
         pais.setText(beerOld.getPais());
@@ -68,24 +52,16 @@ public class DetalleActivity extends AppCompatActivity {
         ratinBar.setRating(beerOld.getCalificacion());
         alcohol.setText(String.valueOf(beerOld.getAlcohol()));
 
-
-
-        Log.i("DATABASE", "NOMBRE:: "+beerOld.getNombre()+"--> ID"+beerOld.getId()+"-->IDACTIVITY:"+id);
-
-
-
-
-
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle, menu);
-     //  MenuItem item= menu.findItem(R.id.action_camara);
         return true;
-       // return super.onCreateOptionsMenu(menu);
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -97,23 +73,23 @@ public class DetalleActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
     }
+
 
     private void removeBeer(final int id) {
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
-       // builder.setTitle("");
-        builder.setMessage("¿Seguro que desea eliminar?");
+        builder.setMessage("¿Seguro que desea eliminar "+beerOld.getNombre()+"?");
         builder.setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 CervezasDbHelper db=CervezasDbHelper.getInstance(getApplicationContext());
                 if(db.delete(id)>0){
+                    deletePhoto();
                     finish();
                     overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                     Toast.makeText(getApplicationContext(), "Eliminado correctamente!", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
 
@@ -121,12 +97,21 @@ public class DetalleActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                //     finish();
             }
         });
         builder.show();
 
     }
+
+    private void deletePhoto() {
+
+        if(beerOld.getUriFoto()!=null){
+            File fdelete = new File(imgBeer.getPath());
+            fdelete.delete();
+        }
+
+    }
+
 
     private void init() {
 
@@ -136,6 +121,7 @@ public class DetalleActivity extends AppCompatActivity {
         otro=(EditText) findViewById(R.id.etOtroDetalle);
         ratinBar=(RatingBar) findViewById(R.id.ratingBarDetalle);
         alcohol=(EditText) findViewById(R.id.etAlcoholDetalle);
+
     }
 
 
@@ -147,7 +133,6 @@ public class DetalleActivity extends AppCompatActivity {
         } else {
             return super.onKeyDown(keyCode, event);
         }
-
     }
 
     private void checkCambios() {
@@ -158,15 +143,18 @@ public class DetalleActivity extends AppCompatActivity {
         oldOtro=otro.getText().toString();
         oldRatinBar=ratinBar.getRating();
         oldAlcohol=Float.parseFloat(alcohol.getText().toString());
-
-        beerNew=new Beer(oldNombre, oldVariedad, oldPais, oldOtro,imgBeer,oldRatinBar, oldAlcohol );
+        String foto;
+        if(beerOld.getUriFoto()==null){
+             foto=null;
+        }else{
+             foto=beerOld.getUriFoto();
+        }
+        beerNew=new Beer(oldNombre, oldVariedad, oldPais, oldOtro,foto,oldRatinBar, oldAlcohol );
 
 
         if(beerNew.equals(beerOld)){
             DetalleActivity.this.finish();
-            //Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
             overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-            //startActivity(intent);
         }else{
             mostrarDialogo();
         }
@@ -193,29 +181,19 @@ public class DetalleActivity extends AppCompatActivity {
                         //startActivity(intent);
                     }
                 });
-
-
-
-
         alertbox.show();
     }
 
     private void updateBeer() {
             CervezasDbHelper dbHelper = CervezasDbHelper.getInstance(getApplicationContext());
             long insertado=dbHelper.update(beerNew,beerOld.getId());
-            if ( insertado>0){
-                Log.i("DATABASE", "UPDATEEE DATO TABLA");
-                Toast.makeText(DetalleActivity.this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
-                 //Intent intent=new Intent(DetalleActivity.this, MostrarActivity.class);
 
-                //startActivity(intent);
+            if ( insertado>0){
+                Toast.makeText(DetalleActivity.this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
                 finish();
                 overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
 
-            }else{
-                Log.i("DATABASE", "ERROR UPDATE");
             }
-
     }
 
 }

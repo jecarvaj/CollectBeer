@@ -1,11 +1,7 @@
 package com.example.jean.collectbeer;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 /**
  * Created by Jean on 27-06-2017.
@@ -15,13 +11,13 @@ public class Beer implements Serializable{
     private int id;
     private Timestamp fecha;
     private String nombre, variedad,  pais, otro;
-    private byte[] uriFoto;
+    private String uriFoto;
     private Float calificacion, alcohol;
 
     public Beer() {
     }
 
-    public Beer(String nombre, String variedad, String pais, String otro, byte[] uriFoto, Float calificacion, Float alcohol) {
+    public Beer(String nombre, String variedad, String pais, String otro,String uriFoto, Float calificacion, Float alcohol) {
         this.nombre = nombre;
         this.variedad = variedad;
         this.pais = pais;
@@ -80,11 +76,11 @@ public class Beer implements Serializable{
         this.otro = otro;
     }
 
-    public byte[] getUriFoto() {
+    public String getUriFoto() {
         return uriFoto;
     }
 
-    public void setUriFoto(byte[] uriFoto) {
+    public void setUriFoto(String uriFoto) {
         this.uriFoto = uriFoto;
     }
 

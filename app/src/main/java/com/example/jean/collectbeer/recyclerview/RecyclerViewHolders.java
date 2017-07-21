@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -62,9 +63,15 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
         tvNombre.setText(item.getNombre());
         ratingBar.setRating(item.getCalificacion());
 
-        byte[] imgBeer = item.getUriFoto();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imgBeer, 0, imgBeer.length);
-        imageView.setImageBitmap(bitmap);
+        if(item.getUriFoto()!=null){
+            Uri imgBeer = Uri.parse(item.getUriFoto());
+            // Bitmap bitmap = BitmapFactory.decodeByteArray(imgBeer, 0, imgBeer.length);
+            imageView.setImageURI(imgBeer);
+        }else{
+           // imageView.setImageDrawable(R.drawable.imgnuevo260x347);
+            imageView.setImageResource(R.drawable.imgnuevo260x347);
+        }
+
 
         if(MostrarActivity.LAYOUT_ITEM==R.layout.beer_item_list){
             tvVariedad.setText(item.getVariedad()+" "+String.valueOf(item.getAlcohol())+"°");

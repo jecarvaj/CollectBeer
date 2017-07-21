@@ -1,14 +1,8 @@
 <resources>
     <string name="app_name">CollectBeer</string>
     <!--Menu-->
-    <string name="nueva">Agregar</string>
-    <string name="consultar">Consultar</string>
-    <string name="lista">Mostrar todo</string>
-    <string name="configuracion">Configuración</string>
 
     <!--Nuevo-->
-    <string name="marca">Marca</string>
-    <string name="marcaEj">Kunstmann</string>
     <string name="nombre">Nombre</string>
     <string name="nombreEj">Ej: Kunstmann Torobayo</string>
     <string name="variedad">Variedad</string>
@@ -19,7 +13,5 @@
     <string name="alcoholEj">Ej: 7.5</string>
     <string name="otro">Otro</string>
     <string name="otroEj">Ej: Botella 500ml. Con tapón</string>
-
-    <string name="msgExitoSubirFoto">Foto cargada correctamente</string>
 
 </resources>

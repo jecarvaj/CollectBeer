@@ -9,11 +9,9 @@ import android.util.Log;
 
 import com.example.jean.collectbeer.Beer;
 import com.example.jean.collectbeer.activity.MostrarActivity;
-import com.example.jean.collectbeer.db.CervezasDbContract;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -46,16 +44,11 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
         Log.i("DATABASESS", "Creando base de datos");
 
         db.execSQL(CervezasDbContract.Cervezas.CREATE_TABLE);
-
-
-        Log.i("DATABASESS", "Tabla CERVEZAS creada");
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(CervezasDbContract.Cervezas.DELETE_TABLE);
-        Log.i("DATABASESS", "Tabla CERVEZAS BORRADADADADADAD ONUPGRADE");
         onCreate(db);
 
     }
@@ -80,32 +73,6 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
         return insertado;
     }
 
-    public Beer getBeer(int id){
-        SQLiteDatabase db=this.getReadableDatabase();
-        if(db==null){
-            return null;
-        }
-        Beer beer = new Beer();
-        String[] args = new String[] {String.valueOf(id)};
-        Cursor cursor = db.rawQuery(" SELECT * FROM "+CervezasDbContract.Cervezas.TABLE_NAME+" WHERE "+CervezasDbContract.Cervezas._ID+"=? ", args);
-        if (cursor.moveToFirst()) {
-            //Recorremos el cursor hasta que no haya más registros
-            do {
-                beer.setId(Integer.parseInt(cursor.getString(0)));
-                beer.setNombre(cursor.getString(1));
-                beer.setFecha(Timestamp.valueOf(cursor.getString(2)));
-                beer.setVariedad(cursor.getString(3));
-                beer.setUriFoto(cursor.getBlob(4));
-                beer.setAlcohol(Float.parseFloat(cursor.getString(5)));
-                beer.setCalificacion(Float.parseFloat(cursor.getString(6)));
-                beer.setOtro(cursor.getString(7));
-                beer.setPais(cursor.getString(8));
-                Log.i("DATABASE", "OBTENGO EL id"+beer.getId()+"NOMBRE "+beer.getNombre());
-            } while(cursor.moveToNext());
-        }
-        cursor.close();
-        return beer;
-    }
 
     public ArrayList<Beer> getAllData() {
         ArrayList<Beer> beerList = new ArrayList<Beer>();
@@ -145,7 +112,7 @@ public class CervezasDbHelper extends SQLiteOpenHelper {
                 beer.setNombre(cursor.getString(1));
                 beer.setFecha(Timestamp.valueOf(cursor.getString(2)));
                 beer.setVariedad(cursor.getString(3));
-                beer.setUriFoto(cursor.getBlob(4));
+                beer.setUriFoto(cursor.getString(4));
                 if(cursor.getString(5).equals("")){
                     beer.setAlcohol(Float.parseFloat("0.0"));
                 }else{

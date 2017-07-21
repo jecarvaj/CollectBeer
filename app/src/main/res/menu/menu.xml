@@ -54,7 +54,7 @@
                 <item android:id="@+id/action_sortDate"
                     android:title="Fecha"
                     android:checkable="true"
-                    android:checked="true"/>
+                    />
                 <item android:id="@+id/action_sortRating"
                     android:title="Rating"
                     android:checkable="true"/>
@@ -75,7 +75,7 @@
                 <item android:id="@+id/action_row_2"
                     android:title="Dos columnas"
                     android:checkable="true"
-                    android:checked="true"/>
+                    />
                 <item android:id="@+id/action_row_3"
                     android:title="Tres columnas"
                     android:checkable="true"/>
